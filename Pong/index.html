@@ -31,6 +31,12 @@
         //brick height and width
         let bheight = 10;
         let bsize = size / 5;
+        let bmargin = bsize / 8; //this should allow for 4? bricks. add margin to both sides.
+        //how to initialize bricks? Object, obviously, but best way to go about it? 
+        // {
+        //     bx: prevbx + size + margin  
+        //     by: prevby + size + margin
+        // }
 
         //gameStates
         let isPaused = false;
