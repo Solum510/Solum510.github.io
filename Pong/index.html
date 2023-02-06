@@ -24,17 +24,39 @@
         document.addEventListener("keyup", keyUp);
 
 
+        //stage specs
+        let margin = 20;
+        let size = 200;
+
+        //brick height and width
+        let bheight = 10;
+        let bsize = size / 5;
+
+        //gameStates
+        let isPaused = false;
+        let sceneIndex = 0; //0 = open, 1 = run, 2 = die, 3 = highscores
+
+        //paddle
+        let px = margin + size / 2;
+        let pwidth = size / 3;
+
+        //score
+        let score = 0;
+        let highscores = [];
+
+
+        //cirlce start
+        let pongx = margin + size / 2;
+        let pongy = margin + size / 2;
+
+        //circle velocity
+        let pongVX = 4;
+        let pongVY = 3;
+
+
         function keyDown(e) {
             // console.log(e);
             keysDown[e.key] = true;
-            // if (e.key == "ArrowLeft") {
-            //     console.log("down left");
-            //     //pv = -2;
-            // }
-            // if (e.key == "ArrowRight") {
-            //     console.log("down right");
-            //     //pv = 2;
-            // }
         }
 
 
@@ -73,49 +95,17 @@
             if (sceneIndex == 0) { //game is at start screen
                 keyUpStart(e);
             } else if (sceneIndex == 1) { //game is at play screen
-
-                // if (e.key == "ArrowLeft") {
-                //     console.log("up left");
-                //     //pv = 0;
-                // }
-                // if (e.key == "ArrowRight") {
-                //     console.log("up right");
-                //     //pv = 0;
-                // }
                 keyUpPlay(e);
-            } else if (sceneIndex == 2) {
+            } else if (sceneIndex == 2) { //game is at game over screen
                 keyUpGO(e);
-            } else if (sceneIndex == 3) {
+            } else if (sceneIndex == 3) { //game is at high score screen
                 keyUpHS(e);
             }
 
         }
 
 
-        let margin = 20;
-        let size = 100;
-
-        //gameStates
-        let isPaused = false;
-        let sceneIndex = 0; //0 = open, 1 = run, 2 = die, 3 = highscores
-
-        //paddle
-        let px = margin + size / 2;
-        let pwidth = 30;
-        //pv = 0;
-
-        //score
-        let score = 0;
-        let highscores = [];
-
-
-        //cirlce start
-        let pongx = margin + size / 2;
-        let pongy = margin + size / 2;
-
-        //circle velocity
-        let pongVX = 3;
-        let pongVY = 2;
+        
 
         function handleGO() {
             highscores.push(score);
@@ -142,7 +132,7 @@
             if (pongx + pongVX > margin + size) {
                 pongVX *= -1
             }
-            if (pongy + pongVY > margin + size) {
+            if (pongy + pongVY > margin + (size *  1.5)) { //bottom collision
                 if (pongx > px - pwidth / 2 && pongx < px + pwidth / 2) {
                     pongVY = -Math.abs(pongVY);
                     score++;
@@ -163,10 +153,10 @@
             //moving the paddle the way we do it in class
             //pull keyboard state + move paddle
             if (keysDown["ArrowRight"]) {
-                px += 2;
+                px += 4;
             }
             if (keysDown["ArrowLeft"]) {
-                px -= 2;
+                px -= 4;
             }
             if (px - pwidth / 2 < margin) {
                 px = margin + pwidth / 2;
@@ -233,10 +223,10 @@
             ctx.fillStyle = "black";
             ctx.beginPath();
             ctx.moveTo(margin, margin);
-            ctx.lineTo(margin + size, margin);
-            ctx.lineTo(margin + size, margin + size);
-            ctx.moveTo(margin, margin + size);
-            ctx.lineTo(margin, margin);
+            ctx.lineTo(margin + size, margin); //right 
+            ctx.lineTo(margin + size, margin + (size * 1.5)); //down 
+            ctx.moveTo(margin, margin + (size * 1.5)); //bottom
+            ctx.lineTo(margin, margin); //up
             ctx.stroke();
 
             //draw circle
@@ -247,8 +237,8 @@
 
             //paddle time
             ctx.beginPath();
-            ctx.moveTo(px - pwidth / 2, size + margin);
-            ctx.lineTo(px + pwidth / 2, size + margin);
+            ctx.moveTo(px - pwidth / 2, (size * 1.5) + margin);
+            ctx.lineTo(px + pwidth / 2, (size * 1.5) + margin);
             ctx.stroke();
 
             //draw score
