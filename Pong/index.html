@@ -73,6 +73,9 @@
             if (e.key == "h") {
                 sceneIndex = 3;
             }
+            if(e.key == "escape") {
+                window.location.href = "../Home/"
+            }
         }
 
         function keyUpPlay(e) {
@@ -190,6 +193,7 @@
             ctx.font = "25px serif";
             ctx.fillText("S - start game", 10, 80);
             ctx.fillText("H - high scores", 10, 100);
+            ctx.fillText("esc - back to home page", 10, 120);
         }
 
         function drawGO() {
