@@ -5,7 +5,7 @@ let size = 200;
 //brick stuff
 let bheight = 10;
 let bsize = size / 5;
-let bmargin = bsize / 8; //this should allow for 4? bricks. add margin to both sides.
+let bmargin = bsize / 5; //this should allow for 4? bricks. add margin to both sides.
 
 let bricks = [{
     bx: margin + bmargin,
