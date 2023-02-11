@@ -2,15 +2,37 @@
 let margin = 20;
 let size = 200;
 
-//brick height and width
+//brick stuff
 let bheight = 10;
 let bsize = size / 5;
 let bmargin = bsize / 8; //this should allow for 4? bricks. add margin to both sides.
-//how to initialize bricks? Object, obviously, but best way to go about it? 
-// {
-//     bx: prevbx + size + margin  
-//     by: prevby + size + margin
-// }
+
+let bricks = [{
+    bx: margin + bmargin,
+    by: margin + bmargin
+},]
+let initflag = true;
+
+function initBricks() {
+    initflag = false;
+    for (let i = 1; i < 16; i++) {
+        if (i % 4 == 0) {
+            //new row
+            bricks.push({
+                bx: margin + bmargin,
+                by: bricks[i - 1].by + bheight + bmargin
+            });
+        } else {
+            bricks.push({
+                bx: bricks[i - 1].bx + bsize + bmargin,
+                by: bricks[i - 1].by
+            });
+        }
+    }
+    console.log(bricks);
+}
+
+
 
 
 
@@ -31,6 +53,7 @@ let pongy = margin + size / 2;
 let pongVX = 4;
 let pongVY = 3;
 
+
 function handleGO() {
     highscores.push(score);
     highscores.sort();
@@ -42,6 +65,11 @@ function handleGO() {
     pongy = margin = size / 2;
     pongVX = 3;
     pongVY = 2;
+    bricks = [{
+        bx: margin + bmargin,
+        by: margin + bmargin
+    },];
+    initBricks();
 }
 
 function updatePlay() {
@@ -56,7 +84,7 @@ function updatePlay() {
     if (pongx + pongVX > margin + size) {
         pongVX *= -1
     }
-    if (pongy + pongVY > margin + (size *  1.5)) { //bottom collision
+    if (pongy + pongVY > margin + (size * 1.5)) { //bottom collision
         if (pongx > px - pwidth / 2 && pongx < px + pwidth / 2) {
             pongVY = -Math.abs(pongVY);
             score++;
@@ -95,6 +123,9 @@ function update() {
     //console.log(keysDown)
     if (sceneIndex == 0) {
         //game start screen
+        if(initflag){
+            initBricks();
+        }
     } else if (sceneIndex == 1) {
         updatePlay();
     }
@@ -128,9 +159,16 @@ function drawHS() {
     ctx.fillText("H - back to start", 10, 80);
     let startY = 100;
     for (let i = 0; i < 10; i++) {
-            if(!(typeof highscores[i] === 'undefined')) { //i found this if statement on a stack overflow page
+        if (!(typeof highscores[i] === 'undefined')) { //i found this if statement on a stack overflow page
             ctx.fillText(i + 1 + ". " + highscores[i], 10, startY + 20 * i);
-            }
+        }
+    }
+}
+
+function drawBricks() {
+    ctx.fillStyle = "#9e4039";
+    for (let i = 0; i < bricks.length; i++) {
+        ctx.fillRect(bricks[i].bx, bricks[i].by, bsize, bheight);
     }
 }
 
@@ -152,6 +190,10 @@ function drawPlay() {
     ctx.lineTo(margin, margin); //up
     ctx.stroke();
 
+    //draw bricks
+    //ctx.fillRect(bricks[0].bx, bricks[0].by, bsize, bheight);
+    drawBricks();
+
     //draw circle
     ctx.fillStyle = "blue"
     ctx.beginPath();
@@ -168,6 +210,8 @@ function drawPlay() {
     ctx.font = "25px serif";
     ctx.fillText(score, margin + size + margin, margin + size + margin);
 
+
+
     //pause instructions
     ctx.fillText("P - pause game", margin + size + margin, margin + size + margin + 30);
     //show the game is paused to prevent user confusion
@@ -183,8 +227,7 @@ function drawPlay() {
 function draw() {
 
     //view of mvc
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    
     if (sceneIndex == 0) { //start
         drawStart();
     } else if (sceneIndex == 1) { //play 
