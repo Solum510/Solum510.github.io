@@ -32,29 +32,7 @@ function initBricks() {
     //console.log(bricks);
 }
 
-function checkBricks() {
-    let hit = false;
-    for(let i = 0; i < bricks.length; i++) {
-        if(pongx >= bricks[i].bx && pongx <= bricks[i].bx + bsize) { //top or bottom
-            if(pongy == bricks[i].by) { //top
-                hit = true;
-                pongVY = -Math.abs(pongVY);
-            } else if(pongy == bricks[i].by + bheight) { //bottom
-                hit = true;
-                pongVY = -Math.abs(pongVY);
-            }
-        } else if(pongy >= bricks[i].by && pongy <= bricks[i].by + bheight) { //left or right side
-            if(pongx == bricks[i].bx) { //left
-                hit = true;
-                pongVX = -Math.abs(pongVX);
 
-            } else if(pongx == bricks[i].bx + bsize){ //right
-                hit = true;
-                pongVX = -Math.abs(pongVX);
-            }
-        }
-    }
-}
 
 
 
@@ -84,7 +62,7 @@ function handleGO() {
     px = margin + size / 2;
     score = 0;
     pongx = margin + size / 2;
-    pongy = margin = size / 2;
+    pongy = margin + size / 2;
     pongVX = 3;
     pongVY = 2;
     bricks = [{
@@ -94,6 +72,39 @@ function handleGO() {
     initBricks();
 }
 
+
+function checkBricks() {
+    let hit = false;
+    for (let i = 0; i < bricks.length; i++) {
+        if (pongx >= bricks[i].bx && pongx <= bricks[i].bx + bsize) { //top or bottom
+            if (pongy + 5 == bricks[i].by - 5) { //top 
+                hit = true;
+                pongVY = -Math.abs(pongVY);
+            }
+            if (pongy - 5 == bricks[i].by + bheight + 5){ //bottom 
+                hit = true;
+                pongVY *= -1;
+            }
+        }
+        if (pongy >= bricks[i].by && pongy <= bricks[i].by + bheight) { //left or right side
+            if (pongx + 5 == bricks[i].bx - 5) { //left
+                hit = true;
+                pongVX *= -1
+
+            }
+            if (pongx - 5 == bricks[i].bx + bsize + 5) { //right
+                hit = true;
+                pongVX *= -1;
+            }
+        }
+        if(hit){
+            bricks[i] = {};
+            return;
+        }
+    }
+}
+
+
 function updatePlay() {
     //move ball
     pongx += pongVX;
@@ -102,7 +113,7 @@ function updatePlay() {
     //move paddle
     //px += pv;
 
-
+    checkBricks();
     if (pongx + pongVX > margin + size) {
         pongVX *= -1
     }
@@ -140,9 +151,21 @@ function updatePlay() {
     }
 }
 
+function updateTest() {
+    //move ball
+    pongx += pongVX;
+    pongy += pongVY;
+
+    //move paddle
+    //px += pv;
+
+    checkBricks();
+}
+
 function update() {
     //model of mvc
     //console.log(keysDown)
+    //updateTest();
     if (sceneIndex == 0) {
         //game start screen
         if(initflag){
@@ -246,10 +269,31 @@ function drawPlay() {
     }
 }
 
+function drawTest() {
+    if (initflag) {
+        bricks = [{ bx: -bsize / 2 + canvas.width / 2, by: -bheight / 2 + canvas.height / 2 }];
+        pongx = canvas.width / 2
+        pongy = 100 + canvas.height / 2
+        pongVX = 0;
+        pongVY = -5;
+        initflag = false;
+    }
+    drawBricks();
+
+    //draw circle
+    ctx.fillStyle = "blue"
+    ctx.beginPath();
+    ctx.arc(pongx, pongy, 5, 0, 2 * Math.PI);
+    ctx.fill();
+}
+
 function draw() {
 
     //view of mvc
-    
+    // if (true) {
+    //     drawTest();
+    //     return;
+    // }
     if (sceneIndex == 0) { //start
         drawStart();
     } else if (sceneIndex == 1) { //play 
