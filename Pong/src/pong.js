@@ -29,10 +29,32 @@ function initBricks() {
             });
         }
     }
-    console.log(bricks);
+    //console.log(bricks);
 }
 
+function checkBricks() {
+    let hit = false;
+    for(let i = 0; i < bricks.length; i++) {
+        if(pongx >= bricks[i].bx && pongx <= bricks[i].bx + bsize) { //top or bottom
+            if(pongy == bricks[i].by) { //top
+                hit = true;
+                pongVY = -Math.abs(pongVY);
+            } else if(pongy == bricks[i].by + bheight) { //bottom
+                hit = true;
+                pongVY = -Math.abs(pongVY);
+            }
+        } else if(pongy >= bricks[i].by && pongy <= bricks[i].by + bheight) { //left or right side
+            if(pongx == bricks[i].bx) { //left
+                hit = true;
+                pongVX = -Math.abs(pongVX);
 
+            } else if(pongx == bricks[i].bx + bsize){ //right
+                hit = true;
+                pongVX = -Math.abs(pongVX);
+            }
+        }
+    }
+}
 
 
 
