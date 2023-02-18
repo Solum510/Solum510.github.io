@@ -1,3 +1,29 @@
+class SceneManager{
+    static scenes = [];
+    static currentSceneIndex = 0;
+    static changedSceneFlag = true;   
+    
+    
+    static addScene(scene){
+        SceneManager.scenes.push(scene);
+    }
+
+    static getActiveScene(){
+        return SceneManager.scenes[SceneManager.currentSceneIndex];
+    }
+
+    static changeScene(index){
+        SceneManager.currentSceneIndex = index;
+        SceneManager.changedSceneFlag = true;
+    }
+}
+
+
+class Scene {
+
+}
+
+
 let canvas = document.getElementById("canv");
 let ctx = canvas.getContext("2d");
 
@@ -10,66 +36,32 @@ document.addEventListener("keyup", keyUp);
 
 //gameStates
 let isPaused = false;
-let sceneIndex = 0; //0 = open, 1 = run, 2 = die, 3 = highscores
 
 function keyDown(e) {
     // console.log(e);
     keysDown[e.key] = true;
 }
 
-function keyUpStart(e) {
-    if (e.key == "s") {
-        sceneIndex = 1;
-    }
-    if (e.key == "h") {
-        sceneIndex = 3;
-    }
-}
-
-function keyUpPlay(e) {
-    if (e.key == "p") {
-        isPaused = !isPaused;
-    }
-}
-
-function keyUpGO(e) {
-    if (e.key == "s") {
-        sceneIndex = 0;
-    }
-    if (e.key == "h") {
-        sceneIndex = 3;
-    }
-}
-
-function keyUpHS(e) {
-    if (e.key == "h") {
-        sceneIndex = 0;
-    }
-}
 
 function keyUp(e) {
     keysDown[e.key] = false;
-    if (sceneIndex == 0) { //game is at start screen
-        keyUpStart(e);
-    } else if (sceneIndex == 1) { //game is at play screen
-        keyUpPlay(e);
-    } else if (sceneIndex == 2) { //game is at game over screen
-        keyUpGO(e);
-    } else if (sceneIndex == 3) { //game is at high score screen
-        keyUpHS(e);
-    }
+    SceneManager.getActiveScene().keyUp(e);
 
 }
 
 function engineUpdate() {
     if (isPaused) return
-    update()
+    if(SceneManager.changedSceneFlag && SceneManager.getActiveScene().start){
+        SceneManager.getActiveScene().start();
+        SceneManager.changedSceneFlag = false;
+    }
+    SceneManager.getActiveScene().update()
 }
 
 function engineDraw() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
-    draw()
+    SceneManager.getActiveScene().draw(ctx)
 }
 
 function start(title) {

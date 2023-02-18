@@ -1,306 +1,318 @@
-//stage specs
-let margin = 20;
-let size = 200;
-
-//brick stuff
-let bheight = 10;
-let bsize = size / 5;
-let bmargin = bsize / 5; //this should allow for 4? bricks. add margin to both sides.
-
-let bricks = [{
-    bx: margin + bmargin,
-    by: margin + bmargin
-},]
-let initflag = true;
-
-function initBricks() {
-    initflag = false;
-    for (let i = 1; i < 16; i++) {
-        if (i % 4 == 0) {
-            //new row
-            bricks.push({
-                bx: margin + bmargin,
-                by: bricks[i - 1].by + bheight + bmargin
-            });
-        } else {
-            bricks.push({
-                bx: bricks[i - 1].bx + bsize + bmargin,
-                by: bricks[i - 1].by
-            });
-        }
-    }
-    //console.log(bricks);
-}
-
-
-
-
-
-//paddle
-let px = margin + size / 2;
-let pwidth = size / 3;
-
 //score
 let score = 0;
 let highscores = [];
 
+class StartScene extends Scene {
 
-//cirlce start
-let pongx = margin + size / 2;
-let pongy = margin + size / 2;
+    keyUp(e) {
+        if (e.key == "s") {
+            SceneManager.changeScene(1);
+            //sceneIndex = 1;
+        }
+        if (e.key == "h") {
+            SceneManager.changeScene(3);
+            //sceneIndex = 3;
+        }
+    }
+    update() {
 
-//circle velocity
-let pongVX = 4;
-let pongVY = 3;
+    }
 
-
-function handleGO() {
-    highscores.push(score);
-    highscores.sort();
-    highscores.reverse();
-    isPaused = false;
-    px = margin + size / 2;
-    score = 0;
-    pongx = margin + size / 2;
-    pongy = margin + size / 2;
-    pongVX = 3;
-    pongVY = 2;
-    bricks = [{
-        bx: margin + bmargin,
-        by: margin + bmargin
-    },];
-    initBricks();
+    draw(ctx) {
+        ctx.font = "50this.px serif";
+        ctx.fillText("Pong", 10, 50);
+        ctx.font = "25this.px serif";
+        ctx.fillText("S - start game", 10, 80);
+        ctx.fillText("H - high scores", 10, 100);
+    }
 }
 
-
-function checkBricks() {
-    let hit = false;
-    for (let i = 0; i < bricks.length; i++) {
-        if (pongx >= bricks[i].bx && pongx <= bricks[i].bx + bsize) { //top or bottom
-            if (pongy + 5 == bricks[i].by - 5) { //top 
-                hit = true;
-                pongVY = -Math.abs(pongVY);
-            }
-            if (pongy - 5 == bricks[i].by + bheight + 5){ //bottom 
-                hit = true;
-                pongVY *= -1;
-            }
+class MainScene extends Scene {
+    keyUp(e) {
+        if (e.key == "p") {
+            isPaused = !isPaused;
         }
-        if (pongy >= bricks[i].by && pongy <= bricks[i].by + bheight) { //left or right side
-            if (pongx + 5 == bricks[i].bx - 5) { //left
-                hit = true;
-                pongVX *= -1
+    }
 
-            }
-            if (pongx - 5 == bricks[i].bx + bsize + 5) { //right
-                hit = true;
-                pongVX *= -1;
+    initbricks() {
+        for (let i = 1; i < 16; i++) {
+            if (i % 4 == 0) {
+                //new row
+                this.bricks.push({
+                    bx: this.margin + this.bmargin,
+                    by: this.bricks[i - 1].by + this.bheight + this.bmargin
+                });
+            } else {
+                this.bricks.push({
+                    bx: this.bricks[i - 1].bx + this.bsize + this.bmargin,
+                    by: this.bricks[i - 1].by
+                });
             }
         }
-        if(hit){
-            bricks[i] = {};
-            score++;
-            return;
+        //console.log(this.bricks);
+    }
+
+    start() {
+        //stage specs
+        this.margin = 20;
+        this.size = 200;
+
+        //brick stuff
+        this.bheight = 10;
+        this.bsize = this.size / 5;
+        this.bmargin = this.bsize / 5; //this should allow for 4? this.bricks. add this.margin to both sides.
+
+        this.bricks = [{
+            bx: this.margin + this.bmargin,
+            by: this.margin + this.bmargin
+        },]
+        this.initbricks()
+        //paddle
+        this.px = this.margin + this.size / 2;
+        this.pwidth = this.size / 3;
+
+
+
+
+        //cirlce start
+        this.pongx = this.margin + this.size / 2;
+        this.pongy = this.margin + this.size / 2;
+
+        //circle velocity
+        this.pongVX = 4;
+        this.pongVY = 3;
+
+    }
+
+
+    checkbricks() {
+        let hit = false;
+        for (let i = 0; i < this.bricks.length; i++) {
+            if (this.pongx >= this.bricks[i].bx && this.pongx <= this.bricks[i].bx + this.bsize) { //top or bottom
+                if (this.pongy + 5 == this.bricks[i].by - 5) { //top 
+                    hit = true;
+                    this.pongVY = -Math.abs(this.pongVY);
+                }
+                if (this.pongy - 5 == this.bricks[i].by + this.bheight + 5) { //bottom 
+                    hit = true;
+                    this.pongVY *= -1;
+                }
+            }
+            if (this.pongy >= this.bricks[i].by && this.pongy <= this.bricks[i].by + this.bheight) { //left or right side
+                if (this.pongx + 5 == this.bricks[i].bx - 5) { //left
+                    hit = true;
+                    this.pongVX *= -1
+
+                }
+                if (this.pongx - 5 == this.bricks[i].bx + this.bsize + 5) { //right
+                    hit = true;
+                    this.pongVX *= -1;
+                }
+            }
+            if (hit) {
+                this.bricks[i] = {};
+                score++;
+                return;
+            }
+        }
+    }
+
+    handleGO() {
+        highscores.push(score);
+        highscores.sort();
+        highscores.reverse();
+        isPaused = false;
+        this.px = this.margin + this.size / 2;
+        score = 0;
+        this.pongx = this.margin + this.size / 2;
+        this.pongy = this.margin + this.size / 2;
+        this.pongVX = 3;
+        this.pongVY = 2;
+        this.bricks = [{
+            bx: this.margin + this.bmargin,
+            by: this.margin + this.bmargin
+        },];
+        this.initthis.bricks();
+    }
+
+    update() {
+        //move ball
+        this.pongx += this.pongVX;
+        this.pongy += this.pongVY;
+
+        //move paddle
+        //this.px += pv;
+
+        this.checkthis.bricks();
+        if (this.pongx + this.pongVX > this.margin + this.size) {
+            this.pongVX *= -1
+        }
+        if (this.pongy + this.pongVY > this.margin + (this.size * 1.5)) { //bottom collision
+            if (this.pongx > this.px - this.pwidth / 2 && this.pongx < this.px + this.pwidth / 2) {
+                this.pongVY = -Math.abs(this.pongVY);
+            } else { //GAME OVER
+                //die
+                SceneManager.changeScene(2);
+                //sceneIndex = 2;
+                this.handleGO();
+            }
+            //this.pongVY *= -1
+        }
+        if (this.pongx + this.pongVX < this.margin) {
+            this.pongVX *= -1
+        }
+        if (this.pongy + this.pongVY < this.margin) {
+            this.pongVY *= -1
+        }
+
+        //moving the paddle the way we do it in class
+        //pull keyboard state + move paddle
+        if (keysDown["ArrowRight"]) {
+            this.px += 4;
+        }
+        if (keysDown["ArrowLeft"]) {
+            this.px -= 4;
+        }
+        if (this.px - this.pwidth / 2 < this.margin) {
+            this.px = this.margin + this.pwidth / 2;
+        }
+        if (this.px + this.pwidth / 2 > this.size + this.margin) {
+            this.px = this.size + this.margin - this.pwidth / 2;
+        }
+    }
+
+
+
+
+
+    drawbricks() {
+        ctx.fillStyle = "#9e4039";
+        for (let i = 0; i < this.bricks.length; i++) {
+            ctx.fillRect(this.bricks[i].bx, this.bricks[i].by, this.bsize, this.bheight);
+        }
+    }
+
+    draw(ctx) {
+        //clear the canvas, i know this isn't how we did it in class but i googled it before we got there
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        //how we did it in class
+        // ctx.fillStyle = "green";
+        // ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        //draw a box
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.moveTo(this.margin, this.margin);
+        ctx.lineTo(this.margin + this.size, this.margin); //right 
+        ctx.lineTo(this.margin + this.size, this.margin + (this.size * 1.5)); //down 
+        ctx.moveTo(this.margin, this.margin + (this.size * 1.5)); //bottom
+        ctx.lineTo(this.margin, this.margin); //up
+        ctx.stroke();
+
+        //draw this.bricks
+        //ctx.fillRect(this.bricks[0].bx, this.bricks[0].by, this.bsize, this.bheight);
+        this.drawthis.bricks();
+
+        //draw circle
+        ctx.fillStyle = "blue"
+        ctx.beginPath();
+        ctx.arc(this.pongx, this.pongy, 5, 0, 2 * Math.PI);
+        ctx.fill();
+
+        //paddle time
+        ctx.beginPath();
+        ctx.moveTo(this.px - this.pwidth / 2, (this.size * 1.5) + this.margin);
+        ctx.lineTo(this.px + this.pwidth / 2, (this.size * 1.5) + this.margin);
+        ctx.stroke();
+
+        //draw score
+        ctx.font = "25this.px serif";
+        ctx.fillText(score, this.margin + this.size + this.margin, this.margin + this.size + this.margin);
+
+
+
+        //pause instructions
+        ctx.fillText("P - pause game", this.margin + this.size + this.margin, this.margin + this.size + this.margin + 30);
+        //show the game is paused to prevent user confusion
+        if (isPaused) {
+            ctx.font = "100this.px serif";
+            ctx.fillStyle = "red";
+            ctx.fillText("PAUSED", canvas.width / 2, canvas.height / 2);
+            ctx.font = "50this.px serif";
+            ctx.fillText("P - unpause game", canvas.width / 2, 50 + canvas.height / 2);
         }
     }
 }
 
 
-function updatePlay() {
-    //move ball
-    pongx += pongVX;
-    pongy += pongVY;
 
-    //move paddle
-    //px += pv;
 
-    checkBricks();
-    if (pongx + pongVX > margin + size) {
-        pongVX *= -1
-    }
-    if (pongy + pongVY > margin + (size * 1.5)) { //bottom collision
-        if (pongx > px - pwidth / 2 && pongx < px + pwidth / 2) {
-            pongVY = -Math.abs(pongVY);
-        } else { //GAME OVER
-            //die
-            sceneIndex = 2;
-            handleGO();
+class EndScene extends Scene {
+    keyUp(e) {
+        if (e.key == "s") {
+            SceneManager.changeScene(0);
+            //sceneIndex = 0;
         }
-        //pongVY *= -1
-    }
-    if (pongx + pongVX < margin) {
-        pongVX *= -1
-    }
-    if (pongy + pongVY < margin) {
-        pongVY *= -1
-    }
-
-    //moving the paddle the way we do it in class
-    //pull keyboard state + move paddle
-    if (keysDown["ArrowRight"]) {
-        px += 4;
-    }
-    if (keysDown["ArrowLeft"]) {
-        px -= 4;
-    }
-    if (px - pwidth / 2 < margin) {
-        px = margin + pwidth / 2;
-    }
-    if (px + pwidth / 2 > size + margin) {
-        px = size + margin - pwidth / 2;
-    }
-}
-
-function updateTest() {
-    //move ball
-    pongx += pongVX;
-    pongy += pongVY;
-
-    //move paddle
-    //px += pv;
-
-    checkBricks();
-}
-
-function update() {
-    //model of mvc
-    //console.log(keysDown)
-    //updateTest();
-    if (sceneIndex == 0) {
-        //game start screen
-        if(initflag){
-            initBricks();
+        if (e.key == "h") {
+            SceneManager.changeScene(3);
+            //sceneIndex = 3;
         }
-    } else if (sceneIndex == 1) {
-        updatePlay();
+
     }
-}
+    update() {
 
-
-function drawStart() {
-    ctx.font = "50px serif";
-    ctx.fillText("Pong", 10, 50);
-    ctx.font = "25px serif";
-    ctx.fillText("S - start game", 10, 80);
-    ctx.fillText("H - high scores", 10, 100);
-}
-
-function drawGO() {
-    ctx.font = "50px serif";
-    ctx.fillStyle = "red";
-    ctx.fillText("GAME OVER", 10, 50);
-    ctx.font = "25px serif";
-    ctx.fillStyle = "black";
-    ctx.fillText("S - restart game", 10, 80);
-    ctx.fillText("H - high scores", 10, 100);
-}
-
-function drawHS() {
-    ctx.font = "50px serif";
-    ctx.fillStyle = "lime";
-    ctx.fillText("HIGH SCORES", 10, 50);
-    ctx.font = "25px serif";
-    ctx.fillStyle = "black";
-    ctx.fillText("H - back to start", 10, 80);
-    let startY = 100;
-    for (let i = 0; i < 10; i++) {
-        if (!(typeof highscores[i] === 'undefined')) { //i found this if statement on a stack overflow page
-            ctx.fillText(i + 1 + ". " + highscores[i], 10, startY + 20 * i);
-        }
     }
-}
 
-function drawBricks() {
-    ctx.fillStyle = "#9e4039";
-    for (let i = 0; i < bricks.length; i++) {
-        ctx.fillRect(bricks[i].bx, bricks[i].by, bsize, bheight);
-    }
-}
-
-function drawPlay() {
-    //clear the canvas, i know this isn't how we did it in class but i googled it before we got there
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    //how we did it in class
-    // ctx.fillStyle = "green";
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    //draw a box
-    ctx.fillStyle = "black";
-    ctx.beginPath();
-    ctx.moveTo(margin, margin);
-    ctx.lineTo(margin + size, margin); //right 
-    ctx.lineTo(margin + size, margin + (size * 1.5)); //down 
-    ctx.moveTo(margin, margin + (size * 1.5)); //bottom
-    ctx.lineTo(margin, margin); //up
-    ctx.stroke();
-
-    //draw bricks
-    //ctx.fillRect(bricks[0].bx, bricks[0].by, bsize, bheight);
-    drawBricks();
-
-    //draw circle
-    ctx.fillStyle = "blue"
-    ctx.beginPath();
-    ctx.arc(pongx, pongy, 5, 0, 2 * Math.PI);
-    ctx.fill();
-
-    //paddle time
-    ctx.beginPath();
-    ctx.moveTo(px - pwidth / 2, (size * 1.5) + margin);
-    ctx.lineTo(px + pwidth / 2, (size * 1.5) + margin);
-    ctx.stroke();
-
-    //draw score
-    ctx.font = "25px serif";
-    ctx.fillText(score, margin + size + margin, margin + size + margin);
-
-
-
-    //pause instructions
-    ctx.fillText("P - pause game", margin + size + margin, margin + size + margin + 30);
-    //show the game is paused to prevent user confusion
-    if (isPaused) {
-        ctx.font = "100px serif";
+    draw(ctx) {
+        ctx.font = "50this.px serif";
         ctx.fillStyle = "red";
-        ctx.fillText("PAUSED", canvas.width / 2, canvas.height / 2);
-        ctx.font = "50px serif";
-        ctx.fillText("P - unpause game", canvas.width / 2, 50 + canvas.height / 2);
+        ctx.fillText("GAME OVER", 10, 50);
+        ctx.font = "25this.px serif";
+        ctx.fillStyle = "black";
+        ctx.fillText("S - restart game", 10, 80);
+        ctx.fillText("H - high scores", 10, 100);
+
     }
 }
 
-function drawTest() {
-    if (initflag) {
-        bricks = [{ bx: -bsize / 2 + canvas.width / 2, by: -bheight / 2 + canvas.height / 2 }];
-        pongx = canvas.width / 2
-        pongy = 100 + canvas.height / 2
-        pongVX = 0;
-        pongVY = -5;
-        initflag = false;
+
+class ScoreScene extends Scene {
+    keyUp(e) {
+        if (e.key == "h") {
+            SceneManager.changeScene(0);
+            //sceneIndex = 0;
+        }
     }
-    drawBricks();
 
-    //draw circle
-    ctx.fillStyle = "blue"
-    ctx.beginPath();
-    ctx.arc(pongx, pongy, 5, 0, 2 * Math.PI);
-    ctx.fill();
-}
+    update() {
 
-function draw() {
+    }
 
-    //view of mvc
-    // if (true) {
-    //     drawTest();
-    //     return;
-    // }
-    if (sceneIndex == 0) { //start
-        drawStart();
-    } else if (sceneIndex == 1) { //play 
-        drawPlay();
-    } else if (sceneIndex == 2) { //game over
-        drawGO();
-    } else if (sceneIndex == 3) { //high scores
-        drawHS();
+    draw(ctx){
+            ctx.font = "50this.px serif";
+            ctx.fillStyle = "lime";
+            ctx.fillText("HIGH SCORES", 10, 50);
+            ctx.font = "25this.px serif";
+            ctx.fillStyle = "black";
+            ctx.fillText("H - back to start", 10, 80);
+            let startY = 100;
+            for (let i = 0; i < 10; i++) {
+                if (!(typeof highscores[i] === 'undefined')) { //i found this if statement on a stack overflow page
+                    ctx.fillText(i + 1 + ". " + highscores[i], 10, startY + 20 * i);
+                }
+            }
     }
 }
+
+let startScene = new StartScene();
+let mainScene = new MainScene();
+let endScene = new EndScene();
+let scoreScene = new ScoreScene();
+
+SceneManager.addScene(startScene);
+SceneManager.addScene(mainScene);
+SceneManager.addScene(endScene);
+SceneManager.addScene(scoreScene);
+
+
