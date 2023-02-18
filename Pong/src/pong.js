@@ -99,6 +99,7 @@ function checkBricks() {
         }
         if(hit){
             bricks[i] = {};
+            score++;
             return;
         }
     }
@@ -120,7 +121,6 @@ function updatePlay() {
     if (pongy + pongVY > margin + (size * 1.5)) { //bottom collision
         if (pongx > px - pwidth / 2 && pongx < px + pwidth / 2) {
             pongVY = -Math.abs(pongVY);
-            score++;
         } else { //GAME OVER
             //die
             sceneIndex = 2;
