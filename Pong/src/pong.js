@@ -119,8 +119,9 @@ class MainScene extends Scene {
 
     handleGO() {
         highscores.push(score);
-        highscores.sort();
-        highscores.reverse();
+        highscores.sort(function(a, b) {
+            return a - b;
+        });
         isPaused = false;
         this.px = this.margin + this.size / 2;
         score = 0;
