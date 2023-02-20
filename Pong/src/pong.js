@@ -19,9 +19,9 @@ class StartScene extends Scene {
     }
 
     draw(ctx) {
-        ctx.font = "50this.px serif";
+        ctx.font = "50px serif";
         ctx.fillText("Pong", 10, 50);
-        ctx.font = "25this.px serif";
+        ctx.font = "25px serif";
         ctx.fillText("S - start game", 10, 80);
         ctx.fillText("H - high scores", 10, 100);
     }
@@ -132,7 +132,7 @@ class MainScene extends Scene {
             bx: this.margin + this.bmargin,
             by: this.margin + this.bmargin
         },];
-        this.initthis.bricks();
+        this.initbricks();
     }
 
     update() {
@@ -143,7 +143,7 @@ class MainScene extends Scene {
         //move paddle
         //this.px += pv;
 
-        this.checkthis.bricks();
+        this.checkbricks();
         if (this.pongx + this.pongVX > this.margin + this.size) {
             this.pongVX *= -1
         }
@@ -212,7 +212,7 @@ class MainScene extends Scene {
 
         //draw this.bricks
         //ctx.fillRect(this.bricks[0].bx, this.bricks[0].by, this.bsize, this.bheight);
-        this.drawthis.bricks();
+        this.drawbricks();
 
         //draw circle
         ctx.fillStyle = "blue"
@@ -227,7 +227,7 @@ class MainScene extends Scene {
         ctx.stroke();
 
         //draw score
-        ctx.font = "25this.px serif";
+        ctx.font = "25px serif";
         ctx.fillText(score, this.margin + this.size + this.margin, this.margin + this.size + this.margin);
 
 
@@ -236,7 +236,7 @@ class MainScene extends Scene {
         ctx.fillText("P - pause game", this.margin + this.size + this.margin, this.margin + this.size + this.margin + 30);
         //show the game is paused to prevent user confusion
         if (isPaused) {
-            ctx.font = "100this.px serif";
+            ctx.font = "100px serif";
             ctx.fillStyle = "red";
             ctx.fillText("PAUSED", canvas.width / 2, canvas.height / 2);
             ctx.font = "50this.px serif";
@@ -265,10 +265,10 @@ class EndScene extends Scene {
     }
 
     draw(ctx) {
-        ctx.font = "50this.px serif";
+        ctx.font = "50px serif";
         ctx.fillStyle = "red";
         ctx.fillText("GAME OVER", 10, 50);
-        ctx.font = "25this.px serif";
+        ctx.font = "25px serif";
         ctx.fillStyle = "black";
         ctx.fillText("S - restart game", 10, 80);
         ctx.fillText("H - high scores", 10, 100);
@@ -290,10 +290,10 @@ class ScoreScene extends Scene {
     }
 
     draw(ctx){
-            ctx.font = "50this.px serif";
+            ctx.font = "50px serif";
             ctx.fillStyle = "lime";
             ctx.fillText("HIGH SCORES", 10, 50);
-            ctx.font = "25this.px serif";
+            ctx.font = "25px serif";
             ctx.fillStyle = "black";
             ctx.fillText("H - back to start", 10, 80);
             let startY = 100;
