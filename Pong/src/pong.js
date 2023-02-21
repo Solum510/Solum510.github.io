@@ -88,6 +88,16 @@ class MainScene extends Scene {
     checkbricks() {
         let hit = false;
         for (let i = 0; i < this.bricks.length; i++) {
+            let brickDots = [
+                {x: this.bricks[i].bx + this.bsize / 2, y: this.bricks[i].by + this.bheight/2},
+                {x: this.bricks[i].bx, y: this.bricks[i].by},
+                {x: this.bricks[i].bx + this.bsize, y: this.bricks[i].by},
+                {x: this.bricks[i].bx, y: this.bricks[i].by + this.bheight},
+                {x: this.bricks[i].bx + this.bsize, y: this.bricks[i].by + this.bheight}
+            ]; //center, tleft, tright, bleft, bright
+            let brickCenter = brickDots[0];
+            let max = Number.NEGATIVE_INFINITY;
+            
             if (this.pongx >= this.bricks[i].bx && this.pongx <= this.bricks[i].bx + this.bsize) { //top or bottom
                 if (this.pongy + 5 == this.bricks[i].by - 5) { //top 
                     hit = true;
