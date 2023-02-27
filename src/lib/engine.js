@@ -24,6 +24,32 @@ class Scene {
 }
 
 
+class GameObject {
+    name = ""
+    components = []
+    started = false
+    addComponent(component){
+        this.components.push(component);
+        component.parent = this;
+        return this;
+    }
+    static getObjectByName(name){
+        return SceneManager.getActiveScene().gameObjects.find(gameObject=>gameObject.name == name)
+    }
+    getComponent(name){
+        return this.components.find(c=>c.name == name)
+    }
+}
+
+
+
+class Component{
+    name = ""
+    parent
+    started = false
+}
+
+
 let canvas = document.getElementById("canv");
 let ctx = canvas.getContext("2d");
 
@@ -50,18 +76,55 @@ function keyUp(e) {
 }
 
 function engineUpdate() {
-    if (isPaused) return
-    if(SceneManager.changedSceneFlag && SceneManager.getActiveScene().start){
-        SceneManager.getActiveScene().start();
-        SceneManager.changedSceneFlag = false;
+    if (pause) return
+    let scene = SceneManager.getActiveScene()
+    if (SceneManager.changedSceneFlag && scene.start) {
+        scene.start()
+        SceneManager.changedSceneFlag = false
     }
-    SceneManager.getActiveScene().update()
+    
+    for(let gameObject of scene.gameObjects){
+        if(gameObject.start && !gameObject.started){
+            gameObject.start()
+            gameObject.started = true
+        }
+    }
+
+    for(let gameObject of scene.gameObjects){
+        for(let component of gameObject.components){
+            if(component.start && !component.started){
+                component.start()
+                component.started = true
+            }
+        }
+    }
+
+
+    for(let gameObject of scene.gameObjects){
+        for(let component of gameObject.components){
+            if(component.update){
+                component.update()
+            }
+        }
+    }
+
+    
+
 }
 
 function engineDraw() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
-    SceneManager.getActiveScene().draw(ctx)
+    
+    let scene = SceneManager.getActiveScene()
+    
+    for(let gameObject of scene.gameObjects){
+        for(let component of gameObject.components){
+            if(component.draw){
+                component.draw(ctx)
+            }
+        }
+    }
 }
 
 function start(title) {
