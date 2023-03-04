@@ -189,7 +189,12 @@ class BricksComponent extends Component {
         let pointsGameObject = GameObject.getObjectByName("PointsGameObject")
         let pointsComponent = pointsGameObject.getComponent("PointsComponent")
 
-
+        let ballGameObject = GameObject.getObjectByName("BallGameObject")
+        let ballComponent = ballGameObject.getComponent("BallComponent")
+        let pongx = ballComponent.transform.x
+        let pongy = ballComponent.transform.y
+        let pongVY = ballComponent.pongVY
+        let pongVX = ballComponent.pongVX
         let hit = false;
         for (let i = 0; i < this.bricks.length; i++) {
             let brickDots = [
@@ -202,25 +207,25 @@ class BricksComponent extends Component {
             let brickCenter = brickDots[0];
             let max = Number.NEGATIVE_INFINITY;
 
-            if (this.pongx >= this.bricks[i].bx && this.pongx <= this.bricks[i].bx + this.bsize) { //top or bottom
-                if (this.pongy + 5 == this.bricks[i].by - 5) { //top 
+            if (pongx >= this.bricks[i].bx && pongx <= this.bricks[i].bx + this.bsize) { //top or bottom
+                if (pongy + 5 == this.bricks[i].by - 5) { //top 
                     hit = true;
-                    this.pongVY = -Math.abs(this.pongVY);
+                    pongVY = -Math.abs(pongVY);
                 }
-                if (this.pongy - 5 == this.bricks[i].by + this.bheight + 5) { //bottom 
+                if (pongy - 5 == this.bricks[i].by + this.bheight + 5) { //bottom 
                     hit = true;
-                    this.pongVY *= -1;
+                    pongVY *= -1;
                 }
             }
-            if (this.pongy >= this.bricks[i].by && this.pongy <= this.bricks[i].by + this.bheight) { //left or right side
-                if (this.pongx + 5 == this.bricks[i].bx - 5) { //left
+            if (pongy >= this.bricks[i].by && pongy <= this.bricks[i].by + this.bheight) { //left or right side
+                if (pongx + 5 == this.bricks[i].bx - 5) { //left
                     hit = true;
-                    this.pongVX *= -1
+                    pongVX *= -1
 
                 }
-                if (this.pongx - 5 == this.bricks[i].bx + this.bsize + 5) { //right
+                if (pongx - 5 == this.bricks[i].bx + this.bsize + 5) { //right
                     hit = true;
-                    this.pongVX *= -1;
+                    pongVX *= -1;
                 }
             }
             if (hit) {
