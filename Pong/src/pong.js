@@ -94,7 +94,7 @@ class BallComponent extends Component {
     update() {
         let paddleGameObject = GameObject.getObjectByName("PaddleGameObject")
         let paddleComponent = paddleGameObject.getComponent("PaddleComponent")
-        let pwidth = paddleComponent.paddleWidth
+        let pwidth = paddleComponent.pwidth
         let px = paddleComponent.transform.x
 
       
@@ -115,6 +115,12 @@ class BallComponent extends Component {
         if (this.transform.y + this.pongVY > this.margin + (this.size * 1.5)) { //bottom collision
             console.log("y + velocity:" + (this.transform.y + this.pongVY))
             console.log(this.margin + (this.size * 1.5))
+
+            console.log("pongx: " + this.transform.x)
+            console.log("paddlex:" + px)
+            console.log("paddlewidth: " + pwidth)
+            console.log("paddle left:" + (px - pwidth / 2 ))
+            console.log("paddle right:" + (px + pwidth / 2))
             if (px - pwidth / 2 <= this.transform.x && px + pwidth / 2 >= this.transform.x) {
                 this.pongVY = -Math.abs(this.pongVY);
             } else { //GAME OVER
