@@ -1,6 +1,42 @@
 //score
 let highscores = [];
 
+class StartControllerComponent extends Component {
+    //start
+
+    update() {
+
+    }
+}
+
+class StartControllerGameObject extends GameObject {
+    start() {
+        this.addComponent(new StartControllerComponent())
+    }
+}
+
+
+class StartDrawComponent extends Component {
+    draw(ctx) {
+        ctx.font = "50px serif";
+        ctx.fillText("Pong", 10, 50);
+        ctx.font = "25px serif";
+        ctx.fillText("S - start game", 10, 80);
+        ctx.fillText("H - high scores", 10, 100);
+    }
+}
+
+
+
+class StartDrawGameObject extends GameObject {
+    start() {
+        this.addComponent(new StartDrawComponent())
+    }
+}
+
+
+
+
 class StartScene extends Scene {
 
     keyUp(e) {
@@ -35,7 +71,7 @@ class PointsComponent extends Component {
     draw(ctx) {
         //draw score
         ctx.font = "25px serif";
-        ctx.fillText(score, this.margin + this.size + this.margin, this.margin + this.size + this.margin);
+        ctx.fillText(this.score, this.margin + this.size + this.margin, this.margin + this.size + this.margin);
     }
 }
 
@@ -47,8 +83,8 @@ class BallComponent extends Component {
         this.size = 200;
 
         //cirlce start
-        this.pongx = this.margin + this.size / 2;
-        this.pongy = this.margin + this.size / 2;
+        this.transform.x = this.margin + this.size / 2;
+        this.transform.y = this.margin + this.size / 2;
 
         //circle velocity
         this.pongVX = 4;
@@ -56,19 +92,30 @@ class BallComponent extends Component {
     }
 
     update() {
+        let paddleGameObject = GameObject.getObjectByName("PaddleGameObject")
+        let paddleComponent = paddleGameObject.getComponent("PaddleComponent")
+        let pwidth = paddleComponent.paddleWidth
+        let px = paddleComponent.transform.x
+
+      
+
+        let bricksGameObject = GameObject.getObjectByName("BricksGameObject")
+        let bricksComponent = bricksGameObject.getComponent("BricksComponent")
         //move ball
-        this.pongx += this.pongVX;
-        this.pongy += this.pongVY;
+        this.transform.x += this.pongVX;
+        this.transform.y += this.pongVY;
 
         //move paddle
         //this.px += pv;
 
-        this.checkbricks();
-        if (this.pongx + this.pongVX > this.margin + this.size) {
+        bricksComponent.checkbricks();
+        if (this.transform.x + this.pongVX > this.margin + this.size) {
             this.pongVX *= -1
         }
-        if (this.pongy + this.pongVY > this.margin + (this.size * 1.5)) { //bottom collision
-            if (this.pongx > this.px - this.pwidth / 2 && this.pongx < this.px + this.pwidth / 2) {
+        if (this.transform.y + this.pongVY > this.margin + (this.size * 1.5)) { //bottom collision
+            console.log("y + velocity:" + (this.transform.y + this.pongVY))
+            console.log(this.margin + (this.size * 1.5))
+            if (px - pwidth / 2 <= this.transform.x && px + pwidth / 2 >= this.transform.x) {
                 this.pongVY = -Math.abs(this.pongVY);
             } else { //GAME OVER
                 //die
@@ -78,10 +125,10 @@ class BallComponent extends Component {
             }
             //this.pongVY *= -1
         }
-        if (this.pongx + this.pongVX < this.margin) {
+        if (this.transform.x + this.pongVX < this.margin) {
             this.pongVX *= -1
         }
-        if (this.pongy + this.pongVY < this.margin) {
+        if (this.transform.y + this.pongVY < this.margin) {
             this.pongVY *= -1
         }
     }
@@ -90,7 +137,7 @@ class BallComponent extends Component {
         //draw circle
         ctx.fillStyle = "blue"
         ctx.beginPath();
-        ctx.arc(this.pongx, this.pongy, 5, 0, 2 * Math.PI);
+        ctx.arc(this.transform.x, this.transform.y, 5, 0, 2 * Math.PI);
         ctx.fill();
     }
 }
@@ -133,6 +180,10 @@ class BricksComponent extends Component {
     }
 
     checkbricks() {
+        let pointsGameObject = GameObject.getObjectByName("PointsGameObject")
+        let pointsComponent = pointsGameObject.getComponent("PointsComponent")
+
+
         let hit = false;
         for (let i = 0; i < this.bricks.length; i++) {
             let brickDots = [
@@ -168,7 +219,7 @@ class BricksComponent extends Component {
             }
             if (hit) {
                 this.bricks[i] = {};
-                score++;
+                pointsComponent.score++;
                 return;
             }
         }
@@ -187,7 +238,71 @@ class BricksComponent extends Component {
     }
 
 }
+class PaddleComponent extends Component {
+    name = "PaddleComponent"
+    start() {
+            //stage specs
+            this.margin = 20;
+            this.size = 200;
+    
+            //paddle
+            this.transform.x = this.margin + this.size / 2;
+            this.pwidth = this.size / 3
+    }
+    update() {
+        if (keysDown["ArrowRight"]) {
+            this.transform.x += 4;
+        }
+        if (keysDown["ArrowLeft"]) {
+            this.transform.x -= 4;
+        }
+        if (this.transform.x - this.pwidth / 2 < this.margin) {
+            this.transform.x = this.margin + this.pwidth / 2;
+        }
+        if (this.transform.x + this.pwidth / 2 > this.size + this.margin) {
+            this.transform.x = this.size + this.margin - this.pwidth / 2;
+        }
+    }
 
+    draw(ctx){
+         //paddle time
+         ctx.beginPath();
+         ctx.moveTo(this.transform.x - this.pwidth / 2, (this.size * 1.5) + this.margin);
+         ctx.lineTo(this.transform.x + this.pwidth / 2, (this.size * 1.5) + this.margin);
+         ctx.stroke();
+    }
+}
+
+class WallsComponent extends Component {
+    name = "WallsComponent"
+    start() {
+        this.margin = 20
+        this.size = 200
+    }
+
+    draw(ctx) {
+         //draw a box
+         ctx.fillStyle = "black";
+         ctx.beginPath();
+         ctx.moveTo(this.margin, this.margin);
+         ctx.lineTo(this.margin + this.size, this.margin); //right 
+         ctx.lineTo(this.margin + this.size, this.margin + (this.size * 1.5)); //down 
+         ctx.moveTo(this.margin, this.margin + (this.size * 1.5)); //bottom
+         ctx.lineTo(this.margin, this.margin); //up
+         ctx.stroke();
+
+         //pause instructions
+         ctx.fillText("P - pause game", this.margin + this.size + this.margin, this.margin + this.size + this.margin + 30);
+         //show the game is paused to prevent user confusion
+         if (isPaused) {
+             ctx.font = "100px serif";
+             ctx.fillStyle = "red";
+             ctx.fillText("PAUSED", canvas.width / 2, canvas.height / 2);
+             ctx.font = "50this.px serif";
+             ctx.fillText("P - unpause game", canvas.width / 2, 50 + canvas.height / 2);
+         }
+    }
+}
 
 class MainScene extends Scene {
     keyUp(e) {
@@ -197,23 +312,32 @@ class MainScene extends Scene {
     }
 
 
-
     start() {
-        //stage specs
-        this.margin = 20;
-        this.size = 200;
+        let pointsGameObject = new GameObject("PointsGameObject")
+        pointsGameObject.addComponent(new PointsComponent())
+        pointsGameObject.transform.x = 0
+        pointsGameObject.transform.y = 0
+        this.addGameObject(pointsGameObject)
 
+        let ballGameObject = new GameObject("BallGameObject")
+        ballGameObject.addComponent(new BallComponent())
+        this.addGameObject(ballGameObject)
 
-        //paddle
-        this.px = this.margin + this.size / 2;
-        this.pwidth = this.size / 3;
+        let bricksGameObject = new GameObject("BricksGameObject")
+        bricksGameObject.addComponent(new BricksComponent())
+        this.addGameObject(bricksGameObject)
 
-
-
-
-
-
+        this.addGameObject(new GameObject("PaddleGameObject").addComponent(new PaddleComponent()))
+        this.addGameObject(new GameObject("WallsGameObject").addComponent(new WallsComponent()))
     }
+    // start() {
+    //     //stage specs
+    //     this.margin = 20;
+    //     this.size = 200;
+    //     //paddle
+    //     this.px = this.margin + this.size / 2;
+    //     this.pwidth = this.size / 3;
+    // }
 
 
 
@@ -235,76 +359,6 @@ class MainScene extends Scene {
             by: this.margin + this.bmargin
         },];
         this.initbricks();
-    }
-
-    update() {
-
-
-        //moving the paddle the way we do it in class
-        //pull keyboard state + move paddle
-        if (keysDown["ArrowRight"]) {
-            this.px += 4;
-        }
-        if (keysDown["ArrowLeft"]) {
-            this.px -= 4;
-        }
-        if (this.px - this.pwidth / 2 < this.margin) {
-            this.px = this.margin + this.pwidth / 2;
-        }
-        if (this.px + this.pwidth / 2 > this.size + this.margin) {
-            this.px = this.size + this.margin - this.pwidth / 2;
-        }
-    }
-
-
-
-
-
-
-
-    draw(ctx) {
-        //clear the canvas, i know this isn't how we did it in class but i googled it before we got there
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        //how we did it in class
-        // ctx.fillStyle = "green";
-        // ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        //draw a box
-        ctx.fillStyle = "black";
-        ctx.beginPath();
-        ctx.moveTo(this.margin, this.margin);
-        ctx.lineTo(this.margin + this.size, this.margin); //right 
-        ctx.lineTo(this.margin + this.size, this.margin + (this.size * 1.5)); //down 
-        ctx.moveTo(this.margin, this.margin + (this.size * 1.5)); //bottom
-        ctx.lineTo(this.margin, this.margin); //up
-        ctx.stroke();
-
-        //draw this.bricks
-        //ctx.fillRect(this.bricks[0].bx, this.bricks[0].by, this.bsize, this.bheight);
-        this.drawbricks();
-
-
-
-        //paddle time
-        ctx.beginPath();
-        ctx.moveTo(this.px - this.pwidth / 2, (this.size * 1.5) + this.margin);
-        ctx.lineTo(this.px + this.pwidth / 2, (this.size * 1.5) + this.margin);
-        ctx.stroke();
-
-
-
-
-        //pause instructions
-        ctx.fillText("P - pause game", this.margin + this.size + this.margin, this.margin + this.size + this.margin + 30);
-        //show the game is paused to prevent user confusion
-        if (isPaused) {
-            ctx.font = "100px serif";
-            ctx.fillStyle = "red";
-            ctx.fillText("PAUSED", canvas.width / 2, canvas.height / 2);
-            ctx.font = "50this.px serif";
-            ctx.fillText("P - unpause game", canvas.width / 2, 50 + canvas.height / 2);
-        }
     }
 }
 
@@ -386,5 +440,3 @@ SceneManager.addScene(startScene);
 SceneManager.addScene(mainScene);
 SceneManager.addScene(endScene);
 SceneManager.addScene(scoreScene);
-
-

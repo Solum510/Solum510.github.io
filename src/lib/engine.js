@@ -31,10 +31,19 @@ class Scene {
 }
 
 
-class GameObject {
+class GameObject{
     name = ""
     components = []
     started = false
+    constructor(name){
+        this.name = name;
+        this.addComponent(new Transform());
+    }
+
+    get transform(){
+        return this.components[0]
+    }
+
     addComponent(component){
         this.components.push(component);
         component.parent = this;
@@ -54,8 +63,20 @@ class Component{
     name = ""
     parent
     started = false
+
+    get transform(){
+        return this.parent.components[0]
+    }
 }
 
+class Transform extends Component {
+    name = "Transform"
+    x = 0
+    y = 0
+    sx = 1
+    sy = 1
+    r = 0
+}
 
 let canvas = document.getElementById("canv");
 let ctx = canvas.getContext("2d");
@@ -83,7 +104,7 @@ function keyUp(e) {
 }
 
 function engineUpdate() {
-    if (pause) return
+    if(isPaused) return
     let scene = SceneManager.getActiveScene()
     if (SceneManager.changedSceneFlag && scene.start) {
         scene.start()
