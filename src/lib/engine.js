@@ -107,6 +107,7 @@ function engineUpdate() {
     if(isPaused) return
     let scene = SceneManager.getActiveScene()
     if (SceneManager.changedSceneFlag && scene.start) {
+        scene.gameObjects = []
         scene.start()
         SceneManager.changedSceneFlag = false
     }
