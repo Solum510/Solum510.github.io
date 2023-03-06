@@ -91,6 +91,7 @@ class BallComponent extends Component {
         this.pongVY = 3;
     }
 
+    //        this.addGameObject(new GameObject("GameOverGameObject").addComponent(new GameOverComponent()))
     update() {
         let paddleGameObject = GameObject.getObjectByName("PaddleGameObject")
         let paddleComponent = paddleGameObject.getComponent("PaddleComponent")
@@ -101,6 +102,9 @@ class BallComponent extends Component {
 
         let bricksGameObject = GameObject.getObjectByName("BricksGameObject")
         let bricksComponent = bricksGameObject.getComponent("BricksComponent")
+
+        let gameOverGameObject = GameObject.getObjectByName("GameOverGameObject")
+        let gameOverComponent = gameOverGameObject.getComponent("GameOverComponent")
         //move ball
         this.transform.x += this.pongVX;
         this.transform.y += this.pongVY;
@@ -113,21 +117,16 @@ class BallComponent extends Component {
             this.pongVX *= -1
         }
         if (this.transform.y + this.pongVY > this.margin + (this.size * 1.5)) { //bottom collision
-            console.log("y + velocity:" + (this.transform.y + this.pongVY))
-            console.log(this.margin + (this.size * 1.5))
-
-            console.log("pongx: " + this.transform.x)
-            console.log("paddlex:" + px)
-            console.log("paddlewidth: " + pwidth)
-            console.log("paddle left:" + (px - pwidth / 2 ))
-            console.log("paddle right:" + (px + pwidth / 2))
+            
             if (px - pwidth / 2 <= this.transform.x && px + pwidth / 2 >= this.transform.x) {
                 this.pongVY = -Math.abs(this.pongVY);
             } else { //GAME OVER
                 //die
+                console.log(gameOverComponent.margin)
+                gameOverComponent.handleGO();
                 SceneManager.changeScene(2);
                 //sceneIndex = 2;
-                this.handleGO();
+                
             }
             //this.pongVY *= -1
         }
@@ -210,22 +209,22 @@ class BricksComponent extends Component {
             if (pongx >= this.bricks[i].bx && pongx <= this.bricks[i].bx + this.bsize) { //top or bottom
                 if (pongy + 5 == this.bricks[i].by - 5) { //top 
                     hit = true;
-                    pongVY = -Math.abs(pongVY);
+                    ballComponent.pongVY = -Math.abs(pongVY);
                 }
                 if (pongy - 5 == this.bricks[i].by + this.bheight + 5) { //bottom 
                     hit = true;
-                    pongVY *= -1;
+                    ballComponent.pongVY *= -1;
                 }
             }
             if (pongy >= this.bricks[i].by && pongy <= this.bricks[i].by + this.bheight) { //left or right side
                 if (pongx + 5 == this.bricks[i].bx - 5) { //left
                     hit = true;
-                    pongVX *= -1
+                    ballComponent.pongVX *= -1
 
                 }
                 if (pongx - 5 == this.bricks[i].bx + this.bsize + 5) { //right
                     hit = true;
-                    pongVX *= -1;
+                    ballComponent.pongVX *= -1;
                 }
             }
             if (hit) {
@@ -314,7 +313,53 @@ class WallsComponent extends Component {
          }
     }
 }
+class GameOverComponent extends Component {
+    name = "GameOverComponent"
+    start() {
+        this.margin = 20;
+        this.size = 200;
+    }
 
+    update() {
+
+    }
+
+    draw(){
+
+    }
+
+    handleGO() {
+        let pointsGameObject = GameObject.getObjectByName("PointsGameObject")
+        let pointsComponent = pointsGameObject.getComponent("PointsComponent")
+
+        let ballGameObject = GameObject.getObjectByName("BallGameObject")
+        let ballComponent = ballGameObject.getComponent("BallComponent")
+
+        let bricksGameObject = GameObject.getObjectByName("BricksGameObject")
+        let bricksComponent = bricksGameObject.getComponent("BricksComponent")
+
+        let paddleGameObject = GameObject.getObjectByName("PaddleGameObject")
+        let paddleComponent = paddleGameObject.getComponent("PaddleComponent")
+
+
+        highscores.push(pointsComponent.score);
+        highscores.sort(function (a, b) {
+            return a - b;
+        });
+        isPaused = false;
+        // paddleComponent.transform.x = this.margin + this.size / 2;
+        // pointsComponent.score = 0;
+        // ballComponent.transform.x = this.margin + this.size / 2;
+        // ballComponent.transform.y = this.margin + this.size / 2;
+        // ballComponent.pongVX = 3;
+        // ballComponent.pongVY = 2;
+        // bricksComponent.bricks = [{
+        //     bx: this.margin + bricksComponent.bmargin,
+        //     by: this.margin + bricksComponent.bmargin
+        // },];
+        // bricksComponent.initbricks();
+    }
+}
 class MainScene extends Scene {
     keyUp(e) {
         if (e.key == "p") {
@@ -340,36 +385,7 @@ class MainScene extends Scene {
 
         this.addGameObject(new GameObject("PaddleGameObject").addComponent(new PaddleComponent()))
         this.addGameObject(new GameObject("WallsGameObject").addComponent(new WallsComponent()))
-    }
-    // start() {
-    //     //stage specs
-    //     this.margin = 20;
-    //     this.size = 200;
-    //     //paddle
-    //     this.px = this.margin + this.size / 2;
-    //     this.pwidth = this.size / 3;
-    // }
-
-
-
-
-    handleGO() {
-        highscores.push(score);
-        highscores.sort(function (a, b) {
-            return a - b;
-        });
-        isPaused = false;
-        this.px = this.margin + this.size / 2;
-        score = 0;
-        this.pongx = this.margin + this.size / 2;
-        this.pongy = this.margin + this.size / 2;
-        this.pongVX = 3;
-        this.pongVY = 2;
-        this.bricks = [{
-            bx: this.margin + this.bmargin,
-            by: this.margin + this.bmargin
-        },];
-        this.initbricks();
+        this.addGameObject(new GameObject("GameOverGameObject").addComponent(new GameOverComponent()))
     }
 }
 
