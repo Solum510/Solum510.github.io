@@ -329,35 +329,11 @@ class GameOverComponent extends Component {
     }
 
     handleGO() {
-        let pointsGameObject = GameObject.getObjectByName("PointsGameObject")
-        let pointsComponent = pointsGameObject.getComponent("PointsComponent")
-
-        let ballGameObject = GameObject.getObjectByName("BallGameObject")
-        let ballComponent = ballGameObject.getComponent("BallComponent")
-
-        let bricksGameObject = GameObject.getObjectByName("BricksGameObject")
-        let bricksComponent = bricksGameObject.getComponent("BricksComponent")
-
-        let paddleGameObject = GameObject.getObjectByName("PaddleGameObject")
-        let paddleComponent = paddleGameObject.getComponent("PaddleComponent")
-
-
         highscores.push(pointsComponent.score);
         highscores.sort(function (a, b) {
             return a - b;
         });
         isPaused = false;
-        // paddleComponent.transform.x = this.margin + this.size / 2;
-        // pointsComponent.score = 0;
-        // ballComponent.transform.x = this.margin + this.size / 2;
-        // ballComponent.transform.y = this.margin + this.size / 2;
-        // ballComponent.pongVX = 3;
-        // ballComponent.pongVY = 2;
-        // bricksComponent.bricks = [{
-        //     bx: this.margin + bricksComponent.bmargin,
-        //     by: this.margin + bricksComponent.bmargin
-        // },];
-        // bricksComponent.initbricks();
     }
 }
 class MainScene extends Scene {
@@ -391,7 +367,7 @@ class MainScene extends Scene {
 
 
 
-class EndController extends Component {
+class EndControllerComponent extends Component {
     update() {
 
     }
@@ -422,7 +398,7 @@ class EndScene extends Scene {
 
     }
     start() {
-        this.addGameObject(new GameObject().addComponent(new EndController()))
+        this.addGameObject(new GameObject().addComponent(new EndControllerComponent()))
         this.addGameObject(new GameObject().addComponent(new EndDrawComponent()))
     }
 
