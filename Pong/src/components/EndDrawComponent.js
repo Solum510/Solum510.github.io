@@ -10,3 +10,5 @@ class EndDrawComponent extends Component {
 
     }
 }
+
+window.EndDrawComponent = EndDrawComponent

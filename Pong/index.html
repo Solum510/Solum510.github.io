@@ -8,9 +8,9 @@
 
 <body>
     <canvas id="canv"></canvas>
-    <script src="../src/lib/engine.js"></script>
-    <script src="./src/pong.js"></script>
-    <script>
+    <script type="module">
+        import "../src/lib/engine.js"
+        import "./src/pong.js"
         start("Pong")
     </script>
 </body>

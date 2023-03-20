@@ -32,3 +32,5 @@ class PaddleComponent extends Component {
          ctx.stroke();
     }
 }
+
+window.PaddleComponent = PaddleComponent

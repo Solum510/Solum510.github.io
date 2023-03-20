@@ -3,3 +3,5 @@ class EndControllerComponent extends Component {
 
     }
 }
+
+window.EndControllerComponent = EndControllerComponent

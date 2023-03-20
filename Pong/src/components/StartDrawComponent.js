@@ -8,10 +8,4 @@ class StartDrawComponent extends Component {
     }
 }
 
-
-
-class StartDrawGameObject extends GameObject {
-    start() {
-        this.addComponent(new StartDrawComponent())
-    }
-}
+window.StartDrawComponent = StartDrawComponent

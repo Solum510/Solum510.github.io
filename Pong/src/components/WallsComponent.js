@@ -28,3 +28,5 @@ class WallsComponent extends Component {
          }
     }
 }
+
+window.WallsComponent = WallsComponent

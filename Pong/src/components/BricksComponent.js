@@ -99,3 +99,5 @@ class BricksComponent extends Component {
     }
 
 }
+
+window.BricksComponent = BricksComponent

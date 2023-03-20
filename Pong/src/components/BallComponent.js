@@ -69,3 +69,5 @@ class BallComponent extends Component {
         ctx.fill();
     }
 }
+
+window.BallComponent = BallComponent

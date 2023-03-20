@@ -14,3 +14,5 @@ class PointsComponent extends Component {
         ctx.fillText(this.score, this.margin + this.size + this.margin, this.margin + this.size + this.margin);
     }
 }
+
+window.PointsComponent = PointsComponent

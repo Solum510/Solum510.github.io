@@ -21,3 +21,5 @@ class GameOverComponent extends Component {
         isPaused = false;
     }
 }
+
+window.GameOverComponent = GameOverComponent
