@@ -23,3 +23,5 @@ class GameObject{
         return this.components.find(c=>c.name == name)
     }
 }
+
+window.GameObject = GameObject

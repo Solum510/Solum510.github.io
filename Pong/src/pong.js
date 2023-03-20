@@ -133,3 +133,5 @@ SceneManager.addScene(startScene);
 SceneManager.addScene(mainScene);
 SceneManager.addScene(endScene);
 SceneManager.addScene(scoreScene);
+
+window.allScenes = [startScene, mainScene, endScene, scoreScene]

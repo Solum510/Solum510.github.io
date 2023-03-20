@@ -16,4 +16,25 @@ class SceneManager{
         SceneManager.currentSceneIndex = index;
         SceneManager.changedSceneFlag = true;
     }
+
+    static startScenes(scenes, title){
+        SceneManager.setScenes(scenes)
+        start(title)
+    }
+
+    static setScenes(scenes){
+        //Same as addScenes, but we clear any scenes first
+        SceneManager.currentSceneIndex = 0;
+        SceneManager.changedScene = true;
+        SceneManager.scenes = []
+        SceneManager.addScenes(scenes);
+    }
+    
+    static addScenes(scenes){
+        for(let scene of scenes){
+            SceneManager.addScene(scene);
+        }
+    }
 }
+
+window.SceneManager = SceneManager

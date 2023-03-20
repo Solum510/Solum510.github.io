@@ -8,3 +8,5 @@ class Scene {
         }
     }
 }
+
+window.Scene = Scene

@@ -6,3 +6,5 @@ class Transform extends Component {
     sy = 1
     r = 0
 }
+
+window.Transform = Transform

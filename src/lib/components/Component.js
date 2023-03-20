@@ -7,3 +7,5 @@ class Component{
         return this.parent.components[0]
     }
 }
+
+window.Component = Component
