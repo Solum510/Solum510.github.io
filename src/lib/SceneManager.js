@@ -29,7 +29,7 @@ class SceneManager{
         SceneManager.scenes = []
         SceneManager.addScenes(scenes);
     }
-    
+
     static addScenes(scenes){
         for(let scene of scenes){
             SceneManager.addScene(scene);

@@ -1,8 +1,12 @@
 class WallsComponent extends Component {
+    
     name = "WallsComponent"
     start() {
         this.margin = 20
         this.size = 200
+        this.canvas = document.getElementById("canv");
+        this.canvas.width = window.innerWidth
+        this.canvas.height = window.innerHeight
     }
 
     draw(ctx) {
@@ -22,9 +26,9 @@ class WallsComponent extends Component {
          if (isPaused) {
              ctx.font = "100px serif";
              ctx.fillStyle = "red";
-             ctx.fillText("PAUSED", canvas.width / 2, canvas.height / 2);
+             ctx.fillText("PAUSED", this.canvas.width / 4, this.canvas.height / 2);
              ctx.font = "50this.px serif";
-             ctx.fillText("P - unpause game", canvas.width / 2, 50 + canvas.height / 2);
+             ctx.fillText("P - unpause game", this.canvas.width / 4, 50 + this.canvas.height / 2);
          }
     }
 }

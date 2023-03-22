@@ -91,3 +91,7 @@ function start(title) {
 
     setInterval(gameLoop, 1000 / 25)
 }
+
+window.start = start
+window.keysDown = keysDown
+window.isPaused = isPaused

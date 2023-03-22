@@ -54,8 +54,6 @@ class MainScene extends Scene {
     start() {
         let pointsGameObject = new GameObject("PointsGameObject")
         pointsGameObject.addComponent(new PointsComponent())
-        pointsGameObject.transform.x = 0
-        pointsGameObject.transform.y = 0
         this.addGameObject(pointsGameObject)
 
         let ballGameObject = new GameObject("BallGameObject")
@@ -135,3 +133,4 @@ SceneManager.addScene(endScene);
 SceneManager.addScene(scoreScene);
 
 window.allScenes = [startScene, mainScene, endScene, scoreScene]
+window.highscores = highscores

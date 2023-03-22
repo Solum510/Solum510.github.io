@@ -10,11 +10,11 @@ class GameOverComponent extends Component {
     }
 
     draw(){
-
+        
     }
 
     handleGO() {
-        highscores.push(pointsComponent.score);
+        highscores.push(GameObject.getObjectByName("PointsGameObject").getComponent("PointsComponent").score);
         highscores.sort(function (a, b) {
             return a - b;
         });
