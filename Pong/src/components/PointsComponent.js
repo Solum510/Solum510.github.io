@@ -2,6 +2,8 @@ class PointsComponent extends Component {
     name = "PointsComponent"
     start() {
         this.score = 0;
+        this.margin = 20;
+        this.size = 200;
     }
 
     update() {
