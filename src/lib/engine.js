@@ -25,6 +25,9 @@ function keyDown(e) {
 
 function keyUp(e) {
     keysDown[e.key] = false;
+    if (e.key == "p") {
+        isPaused = !isPaused;
+    }
     SceneManager.getActiveScene().keyUp(e);
 
 }

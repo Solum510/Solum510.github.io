@@ -8,6 +8,7 @@ import "./components/GameOverComponent.js"
 import "./components/PaddleComponent.js"
 import "./components/PointsComponent.js"
 import "./components/WallsComponent.js"
+import "../../src/lib/components/PauseComponent.js"
 
 
 
@@ -64,6 +65,7 @@ class MainScene extends Scene {
         bricksGameObject.addComponent(new BricksComponent())
         this.addGameObject(bricksGameObject)
 
+        this.addGameObject(new GameObject("PauseGameObject").addComponent(new PauseComponent()))
         this.addGameObject(new GameObject("PaddleGameObject").addComponent(new PaddleComponent()))
         this.addGameObject(new GameObject("WallsGameObject").addComponent(new WallsComponent()))
         this.addGameObject(new GameObject("GameOverGameObject").addComponent(new GameOverComponent()))
