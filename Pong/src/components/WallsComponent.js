@@ -2,8 +2,8 @@ class WallsComponent extends Component {
     
     name = "WallsComponent"
     start() {
-        this.margin = 20
-        this.size = 200
+        this.margin = 0
+        this.size = 100
         this.canvas = document.getElementById("canv");
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight

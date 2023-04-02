@@ -9,7 +9,7 @@ class SceneManager{
         SceneManager.scenes.push(scene);
     }
 
-    static getPreviousScne() {
+    static getPreviousScene() {
         if(SceneManager.previousSceneIndex == -1){
             return
         }

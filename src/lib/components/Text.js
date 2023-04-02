@@ -17,7 +17,7 @@ class Text extends Component {
      * Has an optional color for fillStyle
      * @param {Color} fillStyle 
      */
-    constructor(string, fillStyle = "white", font="20px Arial") {
+    constructor(string, fillStyle = "black", font="20px Arial") {
       super();
       this.fillStyle = fillStyle
       this.string = string;

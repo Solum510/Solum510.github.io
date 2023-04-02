@@ -2,11 +2,11 @@ class BallComponent extends Component {
     name = "BallComponent"
     start() {
         //stage specs
-        this.margin = 20;
-        this.size = 200;
+        this.margin = 0;
+        this.size = 100;
 
         //cirlce start
-        this.transform.x = this.margin + this.size / 2;
+        this.transform.x = this.margin + this.size / 2 + this.transform.x;
         this.transform.y = this.margin + this.size / 2;
 
         //circle velocity
@@ -23,11 +23,11 @@ class BallComponent extends Component {
 
       
 
-        let bricksGameObject = GameObject.getObjectByName("BricksGameObject")
-        let bricksComponent = bricksGameObject.getComponent("BricksComponent")
+        // let bricksGameObject = GameObject.getObjectByName("BricksGameObject")
+        // let bricksComponent = bricksGameObject.getComponent("BricksComponent")
 
-        let gameOverGameObject = GameObject.getObjectByName("GameOverGameObject")
-        let gameOverComponent = gameOverGameObject.getComponent("GameOverComponent")
+        // let gameOverGameObject = GameObject.getObjectByName("GameOverGameObject")
+        // let gameOverComponent = gameOverGameObject.getComponent("GameOverComponent")
         //move ball
         this.transform.x += this.pongVX;
         this.transform.y += this.pongVY;
@@ -35,7 +35,7 @@ class BallComponent extends Component {
         //move paddle
         //this.px += pv;
 
-        bricksComponent.checkbricks();
+        //bricksComponent.checkbricks();
         if (this.transform.x + this.pongVX > this.margin + this.size) {
             this.pongVX *= -1
         }
@@ -43,12 +43,15 @@ class BallComponent extends Component {
             
             if (px - pwidth / 2 <= this.transform.x && px + pwidth / 2 >= this.transform.x) {
                 this.pongVY = -Math.abs(this.pongVY);
+                this.updateListeners("Rebound")
             } else { //GAME OVER
                 //die
-                console.log(gameOverComponent.margin)
-                gameOverComponent.handleGO();
-                SceneManager.changeScene(2);
+                //console.log(gameOverComponent.margin)
+                //gameOverComponent.handleGO();
+                //SceneManager.changeScene(2);
                 //sceneIndex = 2;
+                this.parent.destroy()
+                this.updateListeners("BallOutOfBounds")
                 
             }
             //this.pongVY *= -1
@@ -61,13 +64,14 @@ class BallComponent extends Component {
         }
     }
 
-    draw(ctx) {
-        //draw circle
-        ctx.fillStyle = "blue"
-        ctx.beginPath();
-        ctx.arc(this.transform.x, this.transform.y, 5, 0, 2 * Math.PI);
-        ctx.fill();
-    }
+    //commenting out for now because the ball doesn't have a draw in the repo. don't know why yet.
+    // draw(ctx) {
+    //     //draw circle
+    //     ctx.fillStyle = "blue"
+    //     ctx.beginPath();
+    //     ctx.arc(this.transform.x, this.transform.y, 5, 0, 2 * Math.PI);
+    //     ctx.fill();
+    // }
 }
 
 window.BallComponent = BallComponent

@@ -1,3 +1,4 @@
+import "./Component.js"
 class Camera extends Component {
     name = "Camera"
 

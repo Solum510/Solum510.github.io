@@ -2,12 +2,12 @@ class PaddleComponent extends Component {
     name = "PaddleComponent"
     start() {
             //stage specs
-            this.margin = 20;
-            this.size = 200;
+            this.margin = 0;
+            this.size = 100;
     
             //paddle
             this.transform.x = this.margin + this.size / 2;
-            this.pwidth = this.size / 3
+            this.pwidth = 40
     }
     update() {
         if (keysDown["ArrowRight"]) {

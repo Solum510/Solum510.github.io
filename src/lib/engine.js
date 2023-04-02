@@ -1,8 +1,15 @@
+import "./components/Camera.js"
+import "./components/Circle.js"
+import "./components/Component.js"
+import "./components/Line.js"
+import "./components/Rectangle.js"
+import "./components/Text.js"
+import "./components/Transform.js"
+import "./components/Vector2.js"
 import "./GameObject.js"
 import "./Scene.js"
 import "./SceneManager.js"
-import "./components/Component.js"
-import "./components/Transform.js"
+
 
 let canvas = document.getElementById("canv");
 let ctx = canvas.getContext("2d");
@@ -25,6 +32,9 @@ function keyDown(e) {
 
 function keyUp(e) {
     keysDown[e.key] = false;
+    if (e.key == "p") {
+        isPaused = !isPaused;
+    }
     SceneManager.getActiveScene().keyUp(e);
 
 }
@@ -121,7 +131,7 @@ function engineDraw() {
     ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2)
     ctx.scale(logicalScale,logicalScale)
 
-    ctx.translate(-CanvasCaptureMediaStreamTrack.main.transform.x, -Camera.main.transform.y)
+    ctx.translate(-Camera.main.transform.x, -Camera.main.transform.y)
     for(let gameObject of scene.gameObjects){
         for(let component of gameObject.components){
             if(component.draw){
@@ -134,14 +144,14 @@ function engineDraw() {
     if(aspectRatio > currentAspectRatio){
         let desiredHeight = canvas.width/aspectRatio;
         let amount = (canvas.height-desiredHeight)/2;
-        ctx.fillStyle = "magenta"
+        ctx.fillStyle = "black"
         ctx.fillRect(0,0,canvas.width, amount);
         ctx.fillRect(0,canvas.height-amount,canvas.width, amount);
     }
     else{
         let desiredWidth = canvas.height * aspectRatio
         let amount = (canvas.width-desiredWidth)/2;
-        ctx.fillStyle = "magenta"
+        ctx.fillStyle = "black"
         ctx.fillRect(0,0,amount, canvas.height);
         ctx.fillRect(canvas.width-amount,0,amount, canvas.height);
     }
