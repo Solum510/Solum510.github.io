@@ -33,7 +33,18 @@ function engineUpdate() {
     if(isPaused) return
     let scene = SceneManager.getActiveScene()
     if (SceneManager.changedSceneFlag && scene.start) {
+        let camera = scene.gameObjects[0]
         scene.gameObjects = []
+        scene.gameObjects.push(camera)
+
+        let previousScene = SceneManager.getPreviousScene()
+        if(previousScene) {
+            for(let gameObject of previousScene.gameObjects){
+                if(gameObject.markedDoNotDestroyOnLoad){
+                    scene.gameObjects.push(gameObject)
+                }
+            }
+        }
         scene.start()
         SceneManager.changedSceneFlag = false
     }
@@ -54,6 +65,15 @@ function engineUpdate() {
         }
     }
 
+    let keptGameObjects = []
+    for(let gameObject of scene.gameObjects) {
+        if(!gameObject.markedForDestroy){
+            keptGameObjects.push(gameObject)
+        }
+    }
+
+    scene.gameObjects = keptGameObjects;
+
 
     for(let gameObject of scene.gameObjects){
         for(let component of gameObject.components){
@@ -67,18 +87,63 @@ function engineUpdate() {
 
 }
 
+let aspectRatio = 16/9
+let logicalWidth = 300
+
 function engineDraw() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     
+
+    ctx.fillStyle = Camera.main.getComponent("Camera").fillStyle
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+    let currentAspectRatio = canvas.width/canvas.height;
+    let offsetX = 0;
+    let offsetY = 0;
+    let actualWidth = canvas.width
+    if(aspectRatio > currentAspectRatio){
+        let desiredHeight = canvas.width/aspectRatio
+        let amount = (canvas.height - desiredHeight)/2;
+        offsetY = amount
+    } else {
+        let desiredWidth = canvas.height * aspectRatio
+        let amount = (canvas.width-desiredWidth) /2
+        offsetX = amount
+        actualWidth -= 2*amount
+    }
+
     let scene = SceneManager.getActiveScene()
     
+    ctx.save();
+    ctx.translate(offsetX,offsetY)
+    let logicalScale = actualWidth/logicalWidth
+    ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2)
+    ctx.scale(logicalScale,logicalScale)
+
+    ctx.translate(-CanvasCaptureMediaStreamTrack.main.transform.x, -Camera.main.transform.y)
     for(let gameObject of scene.gameObjects){
         for(let component of gameObject.components){
             if(component.draw){
                 component.draw(ctx)
             }
         }
+    }
+
+    ctx.restore();
+    if(aspectRatio > currentAspectRatio){
+        let desiredHeight = canvas.width/aspectRatio;
+        let amount = (canvas.height-desiredHeight)/2;
+        ctx.fillStyle = "magenta"
+        ctx.fillRect(0,0,canvas.width, amount);
+        ctx.fillRect(0,canvas.height-amount,canvas.width, amount);
+    }
+    else{
+        let desiredWidth = canvas.height * aspectRatio
+        let amount = (canvas.width-desiredWidth)/2;
+        ctx.fillStyle = "magenta"
+        ctx.fillRect(0,0,amount, canvas.height);
+        ctx.fillRect(canvas.width-amount,0,amount, canvas.height);
     }
 }
 
