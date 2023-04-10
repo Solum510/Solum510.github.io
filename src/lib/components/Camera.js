@@ -1,0 +1,18 @@
+import "./Component.js"
+class Camera extends Component {
+    name = "Camera"
+
+    fillStyle
+
+    constructor(fillStyle = "white"){
+        super();
+        this.fillStyle = fillStyle
+    }
+
+    static get main(){
+        let scene = SceneManager.getActiveScene();
+        return scene.gameObjects[0]
+    }
+}
+
+window.Camera = Camera;
