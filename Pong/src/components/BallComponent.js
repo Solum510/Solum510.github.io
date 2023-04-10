@@ -2,16 +2,16 @@ class BallComponent extends Component {
     name = "BallComponent"
     start() {
         //stage specs
-        this.margin = 0;
-        this.size = 100;
+        this.margin = -70;
+        this.size = 85;
 
         //cirlce start
         this.transform.x = this.margin + this.size / 2 + this.transform.x;
         this.transform.y = this.margin + this.size / 2;
 
         //circle velocity
-        this.pongVX = 4;
-        this.pongVY = 3;
+        this.pongVX = 2;
+        this.pongVY = 1.5;
     }
 
     //        this.addGameObject(new GameObject("GameOverGameObject").addComponent(new GameOverComponent()))

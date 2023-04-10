@@ -85,13 +85,13 @@ class MainScene extends Scene {
         this.addGameObject(new GameObject("PointsGameObject")
             .addComponent(new PersistentPointsComponent())
             .addComponent(new Text("Game Points: 0", "black", "10px serif")),
-            new Vector2(-150, -90));
+            new Vector2(-150, -70));
 
         this.addGameObject(
             new GameObject("MaxPointsGameObject")
                 .addComponent(new ScoreSetterComponent())
                 .addComponent(new Text("", "black", "10px serif")),
-            new Vector2(-150, -80));
+            new Vector2(-150, -60));
 
         this.addGameObject(new GameObject("PaddleGameObject").addComponent(new PaddleComponent()))
         this.addGameObject(new GameObject("WallsGameObject").addComponent(new WallsComponent()))

@@ -2,8 +2,8 @@ class PaddleComponent extends Component {
     name = "PaddleComponent"
     start() {
             //stage specs
-            this.margin = 0;
-            this.size = 100;
+            this.margin = -70;
+            this.size = 85;
     
             //paddle
             this.transform.x = this.margin + this.size / 2;
