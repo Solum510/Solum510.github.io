@@ -32,6 +32,7 @@ function keyDown(e) {
 
 function keyUp(e) {
     keysDown[e.key] = false;
+    console.log(e.key)
     if (e.key == "p") {
         isPaused = !isPaused;
     }

@@ -1,7 +1,7 @@
 class BricksComponent extends Component {
     name = "BricksComponent"
     initbricks() {
-        for (let i = 1; i < (this.numBricks * 4); i++) {
+        for (let i = 1; i < (this.numBricks * this.numRows); i++) {
             if (i % this.numBricks == 0) {
                 //new row
                 this.bricks.push({
@@ -19,13 +19,14 @@ class BricksComponent extends Component {
     }
     start() {
         //stage specs
-        this.margin = 20;
-        this.size = 200;
+        this.margin = -70;
+        this.size = 85;
 
         //brick stuff
-        this.numBricks = 4;
-        this.bheight = 10;
+        this.numBricks = 8;
+        this.numRows = 6;
         this.bsize = this.size / (this.numBricks + 1);
+        this.bheight = this.bsize / 2;
         this.bmargin = this.bsize / (this.numBricks + 1); //this should allow for 4? this.bricks. add this.margin to both sides.
 
         this.bricks = [{

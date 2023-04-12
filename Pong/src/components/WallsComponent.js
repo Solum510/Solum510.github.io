@@ -2,11 +2,11 @@ class WallsComponent extends Component {
     
     name = "WallsComponent"
     start() {
-        this.margin = -70
         this.size = 85
         this.canvas = document.getElementById("canv");
         this.canvas.width = window.innerWidth
         this.canvas.height = window.innerHeight
+        this.margin = -70
     }
 
     draw(ctx) {

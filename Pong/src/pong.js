@@ -92,8 +92,8 @@ class MainScene extends Scene {
                 .addComponent(new ScoreSetterComponent())
                 .addComponent(new Text("", "black", "10px serif")),
             new Vector2(-150, -60));
-
-        this.addGameObject(new GameObject("PauseGameObject").addComponent(new PauseComponent()))
+        //this.addGameObject(new GameObject("PauseGameObject").addComponent(new PauseComponent()))
+        this.addGameObject(new GameObject("BricksGameObject").addComponent(new BricksComponent()))
         this.addGameObject(new GameObject("PaddleGameObject").addComponent(new PaddleComponent()))
         this.addGameObject(new GameObject("WallsGameObject").addComponent(new WallsComponent()))
         this.addGameObject(new GameObject("ControllerGameObject").addComponent(new MainControllerComponent()))
