@@ -7,7 +7,7 @@ class PaddleComponent extends Component {
     
             //paddle
             this.transform.x = this.margin + this.size / 2;
-            this.pwidth = 40
+            this.pwidth = this.size / 3
     }
     update() {
         if (keysDown["ArrowRight"]) {

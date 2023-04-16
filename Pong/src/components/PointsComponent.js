@@ -5,12 +5,13 @@ class PointsComponent extends Component {
     name = "PointsComponent"
     start() {
         this.points = 0;
-        this.parent.getComponent("Text").font = "25px serif"
+        //this.parent.getComponent("Text").font = "25px serif"
     }
 
     handleUpdate(component, eventName){
         if(eventName == "Rebound"){
             this.points++;
+            console.log(this.parent.getComponent("Text").string)
             let persistentPointsComponent = GameObject.getObjectByName("PersistentPointsGameObject")
             .getComponent("PersistentPointsComponent")
             if(this.points > persistentPointsComponent.points){

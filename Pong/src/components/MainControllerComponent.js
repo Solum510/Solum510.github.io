@@ -5,16 +5,22 @@ class MainControllerComponent extends Component {
             let ballGameObject = new GameObject("BallGameObject")
             let ballComponent = new BallComponent();
             ballComponent.addListener(this)
-            ballComponent.addListener(GameObject.getObjectByName("PointsGameObject").getComponent("PointsComponent"))
+            //ballComponent.addListener(GameObject.getObjectByName("PointsGameObject").getComponent("PointsComponent"))
             ballGameObject.addComponent(ballComponent)
 
             let circle = new Circle()
             ballGameObject.addComponent(circle)
             circle.fillStyle = "blue"
-            circle.transform.sx = 1.5
+            circle.transform.sx = 1.25
             circle.transform.x = -15 * i
             GameObject.instantiate(ballGameObject)
         }
+        let bricksGameObject = new GameObject("BricksGameObject")
+        let bricksComponent = new BricksComponent()
+        //bricksComponent.addListener(this)
+        bricksComponent.addListener(GameObject.getObjectByName("PointsGameObject").getComponent("PointsComponent"))
+        bricksGameObject.addComponent(bricksComponent)
+        GameObject.instantiate(bricksGameObject)
     }
     handleUpdate(component, eventName) {
         if (eventName == "BallOutOfBounds") {

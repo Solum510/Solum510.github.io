@@ -83,8 +83,8 @@ class MainScene extends Scene {
         // this.addGameObject(new GameObject("GameOverGameObject").addComponent(new GameOverComponent()))
 
         this.addGameObject(new GameObject("PointsGameObject")
-            .addComponent(new PersistentPointsComponent())
-            .addComponent(new Text("Game Points: 0", "black", "10px serif")),
+            .addComponent(new PointsComponent())
+            .addComponent(new Text("Game Points:0", "black", "10px serif")),
             new Vector2(-150, -70));
 
         this.addGameObject(
@@ -93,7 +93,7 @@ class MainScene extends Scene {
                 .addComponent(new Text("", "black", "10px serif")),
             new Vector2(-150, -60));
         //this.addGameObject(new GameObject("PauseGameObject").addComponent(new PauseComponent()))
-        this.addGameObject(new GameObject("BricksGameObject").addComponent(new BricksComponent()))
+        //this.addGameObject(new GameObject("BricksGameObject").addComponent(new BricksComponent()))
         this.addGameObject(new GameObject("PaddleGameObject").addComponent(new PaddleComponent()))
         this.addGameObject(new GameObject("WallsGameObject").addComponent(new WallsComponent()))
         this.addGameObject(new GameObject("ControllerGameObject").addComponent(new MainControllerComponent()))

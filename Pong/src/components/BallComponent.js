@@ -23,8 +23,8 @@ class BallComponent extends Component {
 
       
 
-        // let bricksGameObject = GameObject.getObjectByName("BricksGameObject")
-        // let bricksComponent = bricksGameObject.getComponent("BricksComponent")
+        let bricksGameObject = GameObject.getObjectByName("BricksGameObject")
+        let bricksComponent = bricksGameObject.getComponent("BricksComponent")
 
         // let gameOverGameObject = GameObject.getObjectByName("GameOverGameObject")
         // let gameOverComponent = gameOverGameObject.getComponent("GameOverComponent")
@@ -35,7 +35,7 @@ class BallComponent extends Component {
         //move paddle
         //this.px += pv;
 
-        //bricksComponent.checkbricks();
+        bricksComponent.checkbricks();
         if (this.transform.x + this.pongVX > this.margin + this.size) {
             this.pongVX *= -1
         }
@@ -43,7 +43,7 @@ class BallComponent extends Component {
             
             if (px - pwidth / 2 <= this.transform.x && px + pwidth / 2 >= this.transform.x) {
                 this.pongVY = -Math.abs(this.pongVY);
-                this.updateListeners("Rebound")
+                //this.updateListeners("Rebound")
             } else { //GAME OVER
                 //die
                 //console.log(gameOverComponent.margin)
