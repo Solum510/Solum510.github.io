@@ -2,7 +2,7 @@ class EndDrawComponent extends Component {
     draw(ctx) {
         ctx.font = "50px serif";
         ctx.fillStyle = "red";
-        ctx.fillText("GAME OVER", 10, 50);
+        ctx.fillText("GAME OVER", -50, -50);
         ctx.font = "25px serif";
         ctx.fillStyle = "black";
         ctx.fillText("S - restart game", 10, 80);

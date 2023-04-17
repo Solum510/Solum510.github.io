@@ -119,12 +119,12 @@ class EndScene extends Scene {
     start() {
         this.addGameObject(new GameObject().addComponent(new EndControllerComponent()))
         // this.addGameObject(new GameObject().addComponent(new EndDrawComponent()))
-        this.addGameObject(new GameObject("EndTextGameObject").addComponent(new Text("GAME OVER", "red", "50px serif")), new Vector2(15, 20))
-        this.addGameObject(new GameObject("RestartTextGameObject").addComponent(new Text("S - restart game", "black", "25px serif"), new Vector2(15, 50)))
+        this.addGameObject(new GameObject("EndTextGameObject").addComponent(new Text("GAME OVER", "red", "25px serif")), new Vector2(-75, -25))
+        this.addGameObject(new GameObject("RestartTextGameObject").addComponent(new Text("S - restart game", "black", "15px serif")), new Vector2(-50, -5))
         this.addGameObject(new GameObject("MaxPointsGameObject")
             .addComponent(new ScoreSetterComponent())
-            .addComponent(new Text("", "black", "25px serif")),
-            new Vector2(15, 70))
+            .addComponent(new Text("", "black", "15px serif")),
+            new Vector2(-50, 15))
     }
 
 
