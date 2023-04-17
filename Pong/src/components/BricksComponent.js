@@ -38,7 +38,7 @@ class BricksComponent extends Component {
     }
 
     checkbricks() {
-        console.log("check bricks")
+        //https://codeincomplete.com/articles/collision-detection-in-breakout/
         let ballGameObject = GameObject.getObjectByName("BallGameObject")
         let ballComponent = ballGameObject.getComponent("BallComponent")
         let pongx = ballComponent.transform.x
@@ -57,24 +57,22 @@ class BricksComponent extends Component {
             // let max = Number.NEGATIVE_INFINITY;
 
             if (pongx >= this.bricks[i].bx && pongx <= this.bricks[i].bx + this.bsize) { //top or bottom
-                console.log("t/b")
-                if (pongy == this.bricks[i].by - 10) { //top 
+                if (pongy + 10 == this.bricks[i].by - 10) { //top 
                     hit = true;
                     ballComponent.pongVY = -Math.abs(pongVY);
                 }
-                if (pongy - 5 == this.bricks[i].by + this.bheight + 10) { //bottom 
+                if (pongy - 10 == this.bricks[i].by + this.bheight + 10) { //bottom 
                     hit = true;
                     ballComponent.pongVY *= -1;
                 }
             }
             if (pongy >= this.bricks[i].by && pongy <= this.bricks[i].by + this.bheight) { //left or right side
-                console.log("l/r")
-                if (pongx == this.bricks[i].bx - 10) { //left
+                if (pongx + 10 == this.bricks[i].bx - 10) { //left
                     hit = true;
                     ballComponent.pongVX *= -1
 
                 }
-                if (pongx == this.bricks[i].bx + this.bsize + 10) { //right
+                if (pongx - 10 == this.bricks[i].bx + this.bsize + 10) { //right
                     hit = true;
                     ballComponent.pongVX *= -1;
                 }
