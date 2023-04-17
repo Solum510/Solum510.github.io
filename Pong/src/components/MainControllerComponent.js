@@ -11,8 +11,9 @@ class MainControllerComponent extends Component {
             let circle = new Circle()
             ballGameObject.addComponent(circle)
             circle.fillStyle = "blue"
-            circle.transform.sx = 1.25
-            circle.transform.x = -15 * i
+            //circle.transform.sx = 1.25
+            //circle.transform.x = -15 * i
+            //circle.transform.y = -1
             GameObject.instantiate(ballGameObject)
         }
         let bricksGameObject = new GameObject("BricksGameObject")

@@ -6,8 +6,8 @@ class BallComponent extends Component {
         this.size = 85;
 
         //cirlce start
-        this.transform.x = this.margin + this.size / 2 + this.transform.x;
-        this.transform.y = this.margin + this.size / 2;
+         this.transform.x = this.margin + this.size / 2 + this.transform.x;
+         this.transform.y =  -5//this.margin + this.size / 2 + 50;
 
         //circle velocity
         this.pongVX = 2;
@@ -36,7 +36,7 @@ class BallComponent extends Component {
         //this.px += pv;
 
         bricksComponent.checkbricks();
-        if (this.transform.x + this.pongVX > this.margin + this.size) {
+        if (this.transform.x + this.pongVX > this.margin + this.size) { //right
             this.pongVX *= -1
         }
         if (this.transform.y + this.pongVY > this.margin + (this.size * 1.5)) { //bottom collision
@@ -56,22 +56,15 @@ class BallComponent extends Component {
             }
             //this.pongVY *= -1
         }
-        if (this.transform.x + this.pongVX < this.margin) {
+        if (this.transform.x + this.pongVX < this.margin) { //left
             this.pongVX *= -1
         }
-        if (this.transform.y + this.pongVY < this.margin) {
+        if (this.transform.y + this.pongVY < this.margin) { //top
             this.pongVY *= -1
         }
     }
 
-    //commenting out for now because the ball doesn't have a draw in the repo. don't know why yet.
-    // draw(ctx) {
-    //     //draw circle
-    //     ctx.fillStyle = "blue"
-    //     ctx.beginPath();
-    //     ctx.arc(this.transform.x, this.transform.y, 5, 0, 2 * Math.PI);
-    //     ctx.fill();
-    // }
+    
 }
 
 window.BallComponent = BallComponent

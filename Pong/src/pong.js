@@ -66,22 +66,6 @@ class MainScene extends Scene {
 
 
     start() {
-        // let pointsGameObject = new GameObject("PointsGameObject")
-        // pointsGameObject.addComponent(new PointsComponent())
-        // this.addGameObject(pointsGameObject)
-
-        // let ballGameObject = new GameObject("BallGameObject")
-        // ballGameObject.addComponent(new BallComponent())
-        // this.addGameObject(ballGameObject)
-
-        // let bricksGameObject = new GameObject("BricksGameObject")
-        // bricksGameObject.addComponent(new BricksComponent())
-        // this.addGameObject(bricksGameObject)
-
-        // this.addGameObject(new GameObject("PaddleGameObject").addComponent(new PaddleComponent()))
-        // this.addGameObject(new GameObject("WallsGameObject").addComponent(new WallsComponent()))
-        // this.addGameObject(new GameObject("GameOverGameObject").addComponent(new GameOverComponent()))
-
         this.addGameObject(new GameObject("PointsGameObject")
             .addComponent(new PointsComponent())
             .addComponent(new Text("Game Points:0", "black", "10px serif")),

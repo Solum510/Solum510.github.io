@@ -23,8 +23,8 @@ class BricksComponent extends Component {
         this.size = 85;
 
         //brick stuff
-        this.numBricks = 4;
-        this.numRows = 4;
+        this.numBricks = 1;
+        this.numRows = 1;
         this.bsize = this.size / (this.numBricks + 1);
         this.bheight = this.bsize / 2;
         this.bmargin = this.bsize / (this.numBricks + 1); //this should allow for 4? this.bricks. add this.margin to both sides.
@@ -33,6 +33,8 @@ class BricksComponent extends Component {
             bx: this.margin + this.bmargin,
             by: this.margin + this.bmargin
         },]
+        console.log("bx: " + this.bricks[0].bx) //-48.75
+        console.log("by: " + this.bricks[0].by) //-48.75
         this.initbricks()
 
     }
@@ -44,6 +46,7 @@ class BricksComponent extends Component {
         let pongx = ballComponent.transform.x
         let pongy = ballComponent.transform.y
         let pongVY = ballComponent.pongVY
+        let pongVX = ballComponent.pongVX
         let hit = false;
         for (let i = 0; i < this.bricks.length; i++) {
             // let brickDots = [
@@ -57,22 +60,26 @@ class BricksComponent extends Component {
             // let max = Number.NEGATIVE_INFINITY;
 
             if (pongx >= this.bricks[i].bx && pongx <= this.bricks[i].bx + this.bsize) { //top or bottom
-                if (pongy + 10 == this.bricks[i].by - 10) { //top 
-                    hit = true;
-                    ballComponent.pongVY = -Math.abs(pongVY);
-                }
-                if (pongy - 10 == this.bricks[i].by + this.bheight + 10) { //bottom 
+                if (pongy + pongVY < this.bricks[i].by + this.bheight) { //bottom 
+                    console.log("bottom")
                     hit = true;
                     ballComponent.pongVY *= -1;
                 }
+                if (pongy + pongVY > this.bricks[i].by) { //top 
+                    console.log("top")
+                    hit = true;
+                    ballComponent.pongVY = -Math.abs(pongVY);
+                }
             }
             if (pongy >= this.bricks[i].by && pongy <= this.bricks[i].by + this.bheight) { //left or right side
-                if (pongx + 10 == this.bricks[i].bx - 10) { //left
+                if (pongx + pongVX <  this.bricks[i].bx) { //left
+                    console.log("left")
                     hit = true;
                     ballComponent.pongVX *= -1
 
                 }
-                if (pongx - 10 == this.bricks[i].bx + this.bsize + 10) { //right
+                if (pongx + pongVX < this.bricks[i].bx + this.bsize) { //right
+                    console.log("right")
                     hit = true;
                     ballComponent.pongVX *= -1;
                 }
