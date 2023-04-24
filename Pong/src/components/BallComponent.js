@@ -6,8 +6,8 @@ class BallComponent extends Component {
         this.size = 85;
 
         //cirlce start
-         this.transform.x = this.margin + this.size / 2 + this.transform.x;
-         this.transform.y =  -5//this.margin + this.size / 2 + 50;
+        //  this.transform.x =  0 //this.margin + this.size / 2 + this.transform.x;
+        //  this.transform.y =  -5//this.margin + this.size / 2 + 50;
 
         //circle velocity
         this.pongVX = 2;
@@ -43,6 +43,7 @@ class BallComponent extends Component {
             
             if (px - pwidth / 2 <= this.transform.x && px + pwidth / 2 >= this.transform.x) {
                 this.pongVY = -Math.abs(this.pongVY);
+                bricksComponent.emptyBricks()
                 //this.updateListeners("Rebound")
             } else { //GAME OVER
                 //die
