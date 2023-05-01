@@ -50,16 +50,16 @@ class BricksComponent extends Component {
         for (let i = 0; i < this.bricks.length; i++) {
 
             if (pongx >= this.bricks[i].bx && pongx <= this.bricks[i].bx + this.bsize) { //top or bottom
-                if (pongy > this.bricks[i].by && 
-                    pongy < this.bricks[i].by + this.bheight) { //top 
+                if (pongy + pongVY > this.bricks[i].by && 
+                    pongy + pongVY < this.bricks[i].by + this.bheight) { //top 
                     console.log("top/bottom")
                     hit = true;
                     ballComponent.pongVY *= -1 
                 }
             }
             if (pongy >= this.bricks[i].by && pongy <= this.bricks[i].by + this.bheight) { //left or right side
-                if (pongx >  this.bricks[i].bx 
-                    && pongx < this.bricks[i].bx + this.bsize) { //left
+                if (pongx + pongVX >  this.bricks[i].bx 
+                    && pongx + pongVX < this.bricks[i].bx + this.bsize) { //left
                     console.log("left/right")
                     hit = true;
                     ballComponent.pongVX *= -1
