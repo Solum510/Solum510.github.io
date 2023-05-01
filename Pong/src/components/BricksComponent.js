@@ -50,16 +50,16 @@ class BricksComponent extends Component {
         for (let i = 0; i < this.bricks.length; i++) {
 
             if (pongx >= this.bricks[i].bx && pongx <= this.bricks[i].bx + this.bsize) { //top or bottom
-                if (pongy + pongVY > this.bricks[i].by && 
-                    pongy + pongVY < this.bricks[i].by + this.bheight) { //top 
+                if (pongy > this.bricks[i].by && 
+                    pongy < this.bricks[i].by + this.bheight) { //top 
                     console.log("top/bottom")
                     hit = true;
                     ballComponent.pongVY *= -1 
                 }
             }
             if (pongy >= this.bricks[i].by && pongy <= this.bricks[i].by + this.bheight) { //left or right side
-                if (pongx + pongVX >  this.bricks[i].bx 
-                    && pongx + pongVX < this.bricks[i].bx + this.bsize) { //left
+                if (pongx >  this.bricks[i].bx 
+                    && pongx < this.bricks[i].bx + this.bsize) { //left
                     console.log("left/right")
                     hit = true;
                     ballComponent.pongVX *= -1
@@ -79,13 +79,12 @@ class BricksComponent extends Component {
 
     emptyBricks() {
         console.log(this.bricks.length)
-        if(this.bricks.length == 0) {
-            let ballGameObject = GameObject.getObjectByName("BallGameObject")
+        let ballGameObject = GameObject.getObjectByName("BallGameObject")
             let ballComponent = ballGameObject.getComponent("BallComponent")
-            ballComponent.pongVX += .3;
-            ballComponent.pongVY += .4;
+        if(this.bricks.length == 0) {
             this.numBricks += 2
             this.numRows += 1
+            ballComponent.decreaseVels()
             this.bsize = this.size / (this.numBricks + 1);
             this.bheight = this.bsize / 2;
             this.bmargin = this.bsize / (this.numBricks + 1); 
@@ -94,7 +93,13 @@ class BricksComponent extends Component {
                 by: this.margin + this.bmargin
             },]
             this.initbricks()
+        } else {
+            ballComponent.incXVel(Math.random() / 8)
+            ballComponent.incYVel(Math.random() / 8)
+            console.log("vx:" + ballComponent.pongVX)
+            console.log("vy:"+ballComponent.pongVY)
         }
+
     }
     draw(ctx) {
         ctx.fillStyle = "#9e4039";

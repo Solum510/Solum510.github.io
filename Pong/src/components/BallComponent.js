@@ -36,10 +36,10 @@ class BallComponent extends Component {
         //this.px += pv;
 
         bricksComponent.checkbricks();
-        if (this.transform.x + this.pongVX > this.margin + this.size) { //right
+        if (this.transform.x > this.margin + this.size) { //right
             this.pongVX *= -1
         }
-        if (this.transform.y + this.pongVY > this.margin + (this.size * 1.5)) { //bottom collision
+        if (this.transform.y > this.margin + (this.size * 1.5)) { //bottom collision
             
             if (px - pwidth / 2 <= this.transform.x && px + pwidth / 2 >= this.transform.x) {
                 this.pongVY = -Math.abs(this.pongVY);
@@ -57,15 +57,60 @@ class BallComponent extends Component {
             }
             //this.pongVY *= -1
         }
-        if (this.transform.x + this.pongVX < this.margin) { //left
+        if (this.transform.x < this.margin) { //left
             this.pongVX *= -1
         }
-        if (this.transform.y + this.pongVY < this.margin) { //top
+        if (this.transform.y < this.margin) { //top
             this.pongVY *= -1
         }
     }
 
-    
+    incXVel(num){
+        if(this.pongVX < 0) {
+            this.pongVX -= num;
+        } else {
+            this.pongVX += num;
+        }
+    }
+
+    incYVel(num){
+        if(this.pongVY < 0) {
+            this.pongVY -= num;
+        } else {
+            this.pongVY += num;
+        }
+    }
+
+    decreaseVels(){
+        if(this.pongVX < 0){
+            if(this.pongVX / 2 > -2) {
+                this.pongVX = -2
+            } else {
+                this.pongVX /= 2;
+            }
+        } else {
+            if(this.pongVX / 2 < 2){
+                this.pongVX = 2;
+            } else {
+                this.pongVX /= 2;
+            }
+        }
+
+        if(this.pongVY < 0){
+            if(this.pongVY / 2 > -1.5){
+                this.pongVY = -1.5;
+            } else {
+                this.pongVY /= 2;
+            } 
+        } else {
+            if(this.pongVY / 2 < 1.5){
+                this.pongVY = 1.5;
+            } else {
+                this.pongVY /= 2;
+            }
+        }
+        
+    }
 }
 
 window.BallComponent = BallComponent
