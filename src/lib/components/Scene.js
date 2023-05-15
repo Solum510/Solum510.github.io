@@ -7,7 +7,7 @@ class Scene {
     }
 
 
-    addGameObject(gameObject, translate = Vector2.zero, scale = Vector2.one, rotation = 0){
+    addGameObject(gameObject, translate = Vector2.zero, scale = Vector2.one, rotation = 0, layer = 0){
         this.gameObjects.push(gameObject);
 
         gameObject.transform.x = translate.x;
@@ -15,7 +15,7 @@ class Scene {
         gameObject.transform.sx = scale.x;
         gameObject.transform.sy = scale.y;
         gameObject.transform.r = rotation;
-
+        gameObject.layer = layer
         if(gameObject.start && !gameObject.started){
             gameObject.started = true
             gameObject.start()

@@ -1,5 +1,6 @@
 class MainControllerComponent extends Component {
     start() {
+        Camera.main.fillStyle = "white"
         for (let i = 0; i < 1; i++) {
             //Create a new pong ball
             let ballGameObject = new GameObject("BallGameObject")

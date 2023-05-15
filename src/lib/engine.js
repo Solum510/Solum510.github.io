@@ -1,14 +1,30 @@
-import "./components/Camera.js"
-import "./components/Circle.js"
+import "./components/SceneManager.js"
 import "./components/Component.js"
-import "./components/Line.js"
-import "./components/Rectangle.js"
-import "./components/Text.js"
-import "./components/Transform.js"
-import "./components/Vector2.js"
+import "./components/Scene.js"
 import "./GameObject.js"
-import "./Scene.js"
-import "./SceneManager.js"
+import "./components/Transform.js"
+import "./components/Circle.js"
+import "./components/Camera.js"
+import "./components/Rectangle.js"
+import "./components/GUIRectangle.js"
+import "./components/GUIText.js"
+import "./components/GUITextCentered.js"
+import "./components/ScreenRectangle.js"
+import "./components/Line.js"
+import "./components/Text.js"
+import "./components/Vector2.js"
+import "./components/Time.js"
+import "./components/Input.js"
+import "./components/CameraMover.js"
+import "./components/Point.js"
+
+
+class EngineGlobals {
+    static requestedAspectRatio = 16/9
+    static logicalWidth = 1
+}
+
+window.EngineGlobals = EngineGlobals
 
 
 let canvas = document.getElementById("canv");
@@ -40,8 +56,15 @@ function keyUp(e) {
 
 }
 
-function engineUpdate() {
+function gameLoop() {
+    update()
+    draw()
+}
+
+function update() {
     if(isPaused) return
+
+    Time.update()
     let scene = SceneManager.getActiveScene()
     if (SceneManager.changedSceneFlag && scene.start) {
         let camera = scene.gameObjects[0]
@@ -94,31 +117,32 @@ function engineUpdate() {
         }
     }
 
-    
+    Input.finishFrame()
 
 }
 
-let aspectRatio = 16/9
-let logicalWidth = 300
+let letterboxColor = "grey"
+// let aspectRatio = 16/9
+// let logicalWidth = 300
 
-function engineDraw() {
+function draw() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     
 
-    ctx.fillStyle = Camera.main.getComponent("Camera").fillStyle
+    ctx.fillStyle = Camera.main.fillStyle
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
     let currentAspectRatio = canvas.width/canvas.height;
     let offsetX = 0;
     let offsetY = 0;
     let actualWidth = canvas.width
-    if(aspectRatio > currentAspectRatio){
-        let desiredHeight = canvas.width/aspectRatio
+    if(EngineGlobals.requestedAspectRatio > currentAspectRatio){
+        let desiredHeight = canvas.width/EngineGlobals.requestedAspectRatio
         let amount = (canvas.height - desiredHeight)/2;
         offsetY = amount
     } else {
-        let desiredWidth = canvas.height * aspectRatio
+        let desiredWidth = canvas.height * EngineGlobals.requestedAspectRatio
         let amount = (canvas.width-desiredWidth) /2
         offsetX = amount
         actualWidth -= 2*amount
@@ -127,45 +151,121 @@ function engineDraw() {
     let scene = SceneManager.getActiveScene()
     
     ctx.save();
-    ctx.translate(offsetX,offsetY)
-    let logicalScale = actualWidth/logicalWidth
+    let logicalScale = Camera.getLogicalScaleZoomable(ctx)
     ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2)
     ctx.scale(logicalScale,logicalScale)
 
     ctx.translate(-Camera.main.transform.x, -Camera.main.transform.y)
-    for(let gameObject of scene.gameObjects){
-        for(let component of gameObject.components){
-            if(component.draw){
-                component.draw(ctx)
+
+
+    let min = scene.gameObjects.filter(go => go.components.some(c=>c.draw))
+    .map(go => go.layer)
+    .reduce((previous,current)=>Math.max(previous, current),0)
+
+    let max = scene.gameObjects.filter(go=>go.components.some(c=>c.draw))
+    .map(go => go.layer)
+    .reduce((previous, current)=>Math.max(previous, current),0)
+
+    for(let i = min; i <= max; i++){
+        let gameObjects = scene.gameObjects.filter(go=>go.layer==i)
+        for(let gameObject of scene.gameObjects){
+            for(let component of gameObject.components){
+                if(component.draw){
+                    component.draw(ctx)
+                }
             }
         }
     }
+    
 
     ctx.restore();
-    if(aspectRatio > currentAspectRatio){
-        let desiredHeight = canvas.width/aspectRatio;
+
+    let zeroX = 0
+    let zeroY = 0
+
+    if(EngineGlobals.requestedAspectRatio > currentAspectRatio){
+        let desiredHeight = canvas.width/EngineGlobals.requestedAspectRatio;
         let amount = (canvas.height-desiredHeight)/2;
-        ctx.fillStyle = "black"
+        zeroY = amount
+        ctx.fillStyle = letterboxColor
         ctx.fillRect(0,0,canvas.width, amount);
         ctx.fillRect(0,canvas.height-amount,canvas.width, amount);
     }
     else{
-        let desiredWidth = canvas.height * aspectRatio
+        let desiredWidth = canvas.height * EngineGlobals.requestedAspectRatio
         let amount = (canvas.width-desiredWidth)/2;
-        ctx.fillStyle = "black"
+        zeroX = amount
+        ctx.fillStyle = letterboxColor
         ctx.fillRect(0,0,amount, canvas.height);
         ctx.fillRect(canvas.width-amount,0,amount, canvas.height);
     }
+
+    let logicalScaling = Camera.getLogicalScale(ctx) 
+    min = scene.gameObjects.filter(go=>go.components.some(c=>c.drawGUI))
+    .map(go => go.layer)
+    .reduce((previous,current)=>Math.min(previous,current),0)
+
+    max = scene.gameObjects.filter(go=>go.components.some(c=>c.drawGUI))
+    .map(go => go.layer)
+    .reduce((previous, current)=>Math.max(previous, current),0)
+
+    ctx.save();
+    ctx.translate(zeroX, zeroY)
+    ctx.scale(logicalScaling, logicalScaling);
+    for (let i = min; i <= max; i++) {
+        let gameObjects = scene.gameObjects.filter(go=>go.layer==i)
+
+        for (let gameObject of gameObjects) {
+            for (let component of gameObject.components) {
+                if (component.drawGUI) {
+                    component.drawGUI(ctx)
+                }
+            }
+        }
+    }
+    ctx.restore();
+
+    ctx.save();
+    min = scene.gameObjects.filter(go=>go.components.some(c=>c.drawScreen))
+    .map(go => go.layer)
+    .reduce((previous, current)=>Math.min(previous, current),0)
+
+     max = scene.gameObjects.filter(go=>go.components.some(c=>c.drawScreen))
+    .map(go => go.layer)
+    .reduce((previous, current)=>Math.max(previous, current),0)
+
+    ctx.save();
+    for (let i = min; i <= max; i++) {
+        let gameObjects = scene.gameObjects.filter(go=>go.layer==i)
+
+        for (let gameObject of gameObjects) {
+            for (let component of gameObject.components) {
+                if (component.drawScreen) {
+                    component.drawScreen(ctx)
+                }
+            }
+        }
+    }
+    ctx.restore();
 }
 
-function start(title) {
+function start(title, settings = {}) {
+
+    Input.start()
+
+    canvas.width = window.innerWdith 
+    canvas.height = window.innerHeight
     document.title = title;
-    function gameLoop() {
-        engineUpdate()
-        engineDraw()
+
+    if(settings) {
+        console.log(settings)
+        EngineGlobals.requestedAspectRatio = settings.aspectRatio ? settings.aspectRatio : 16 / 9
+        letterboxColor = settings.letterboxColor ? settings.letterboxColor : "black"
+        EngineGlobals.logicalWidth = settings.logicalWidth ? settings.logicalWidth : 100
     }
 
-    setInterval(gameLoop, 1000 / 25)
+    console.log(EngineGlobals.logicalWidth)
+    setInterval(gameLoop, 1000 * Time.deltaTime)
 }
 
 window.start = start

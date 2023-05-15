@@ -7,7 +7,8 @@ class GameObject{
 
     markedDoNotDestroyOnLoad = false;
 
-
+    layer = 0
+    
     constructor(name){
         this.name = name;
         this.addComponent(new Transform());

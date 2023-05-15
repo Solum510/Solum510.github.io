@@ -1,5 +1,5 @@
 /**
- * A circle engine-level component
+ * A line engine-level component
  */
 class Line extends Component {
     /** The name of the component */

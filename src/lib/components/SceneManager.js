@@ -25,9 +25,9 @@ class SceneManager{
         SceneManager.changedSceneFlag = true;
     }
 
-    static startScenes(scenes, title){
+    static startScenes(scenes, title, settings = {}){
         SceneManager.setScenes(scenes)
-        start(title)
+        start(title, settings)
     }
 
     static setScenes(scenes){

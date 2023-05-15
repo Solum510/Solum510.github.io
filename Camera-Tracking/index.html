@@ -2,7 +2,6 @@
 <html>
 
 <head>
-    <title>Pong</title>
     <link href="../src/engine.css" rel="stylesheet">
 </head>
 
@@ -10,10 +9,10 @@
     <canvas id="canv"></canvas>
     <script type="module">
         import "../src/lib/engine.js"
-        import "./src/pong.js"
-        let settings = {logicalWidth: 300, letterboxColor: "gray"}
-        SceneManager.startScenes(allScenes, "Brick Breaker", settings)
-
+        import scene from "./camera-tracking.js"
+        console.log(scene)
+        SceneManager.addScene(scene);
+        start("Camera Tracking", {aspectRatio:9/16,letterboxColor:"black"})
     </script>
 </body>
 

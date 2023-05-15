@@ -10,8 +10,8 @@ class BallComponent extends Component {
         //  this.transform.y =  -5//this.margin + this.size / 2 + 50;
 
         //circle velocity
-        this.pongVX = 2;
-        this.pongVY = 1.5;
+        this.pongVX = 1;
+        this.pongVY = .75;
     }
 
     //        this.addGameObject(new GameObject("GameOverGameObject").addComponent(new GameOverComponent()))
@@ -84,13 +84,13 @@ class BallComponent extends Component {
     decreaseVels(){
         if(this.pongVX < 0){
             if(this.pongVX / 2 > -2) {
-                this.pongVX = -2
+                this.pongVX = -1
             } else {
-                this.pongVX /= 2;
+                this.pongVX /=2;
             }
         } else {
             if(this.pongVX / 2 < 2){
-                this.pongVX = 2;
+                this.pongVX = 1;
             } else {
                 this.pongVX /= 2;
             }
@@ -98,13 +98,13 @@ class BallComponent extends Component {
 
         if(this.pongVY < 0){
             if(this.pongVY / 2 > -1.5){
-                this.pongVY = -1.5;
+                this.pongVY = -.75;
             } else {
                 this.pongVY /= 2;
             } 
         } else {
             if(this.pongVY / 2 < 1.5){
-                this.pongVY = 1.5;
+                this.pongVY = .75;
             } else {
                 this.pongVY /= 2;
             }

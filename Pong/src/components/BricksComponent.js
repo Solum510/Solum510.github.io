@@ -94,8 +94,8 @@ class BricksComponent extends Component {
             },]
             this.initbricks()
         } else {
-            ballComponent.incXVel(Math.random() / 8)
-            ballComponent.incYVel(Math.random() / 8)
+            ballComponent.incXVel(Math.random() / 16)
+            ballComponent.incYVel(Math.random() / 16)
             console.log("vx:" + ballComponent.pongVX)
             console.log("vy:"+ballComponent.pongVY)
         }
