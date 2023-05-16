@@ -16,9 +16,10 @@ class PaddleComponent extends Component {
         if (keysDown["ArrowLeft"]) {
             this.transform.x -= 4;
         }
-        let ballGameObject = GameObject.getObjectByName("BallGameObject")
-        let ballComponent = ballGameObject.getComponent("BallComponent")
-        this.transform.x = ballComponent.transform.x
+        //make the paddle move on it's own
+        // let ballGameObject = GameObject.getObjectByName("BallGameObject")
+        // let ballComponent = ballGameObject.getComponent("BallComponent")
+        // this.transform.x = ballComponent.transform.x
         if (this.transform.x - this.pwidth / 2 < this.margin) {
             this.transform.x = this.margin + this.pwidth / 2;
         }
